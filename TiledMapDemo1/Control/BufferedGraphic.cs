@@ -151,6 +151,7 @@ namespace TiledMapDemo1
         public Action<MouseEventArgs> OnMove;
         public Action<EventArgs> OnSizeChange;
         public Action<MouseEventArgs> OnMouseDownAction;
+        public Action<MouseEventArgs> OnMouseUpAction;
         #endregion
 
         #region Events
@@ -196,7 +197,11 @@ namespace TiledMapDemo1
                 OnMove(e);
 
         }
-
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            if (OnMouseUpAction != null)
+                OnMouseUpAction(e);
+        }
         int xMove = -1, yMove = -1;
         protected virtual void Draw(Graphics graphics)
         {

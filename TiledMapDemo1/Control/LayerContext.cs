@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TiledMapDemo1.Model;
 
 namespace TiledMapDemo1
 {
@@ -104,7 +105,12 @@ namespace TiledMapDemo1
         }
         public bool AddLayer(string name, int index)
         {
+            return AddLayer(name, index, LayerType.NONE);
+        }
+        public bool AddLayer(string name, int index, LayerType type)
+        {
             Layer newLayer = new Layer(this, name, index);
+            newLayer.Type = type;
             Layer check = m_Layers.Where(e => e.Id == name).FirstOrDefault();
             if (check != null)
                 return false;
@@ -132,17 +138,82 @@ namespace TiledMapDemo1
             }
             return false;
         }
+        public void Clear()
+        {
+            m_Layers.Clear();
+            m_CurrentIndex = -1;
+            m_CurrentLayer = null;
+
+        }
+
         public void DrawRectange(int x, int y, int width, int height)
+        {
+            DrawRectange(x, y, width, height, LayerType.TILEMAP);
+        }
+
+        private void _stwichLayerType(LayerType type)
+        {
+            //bool exist = false;
+            //if (type == LayerType.OBJECT)
+            //{
+            //    foreach (Layer l in m_Layers)
+            //    {
+            //        if (l.Type == LayerType.OBJECT)
+            //            exist = true;
+            //    }
+            //    if (!exist)
+            //    {
+            //        AddLayer("Object Layer", 10, LayerType.OBJECT);
+            //    }
+            //}
+
+            foreach (Layer l in m_Layers)
+            {
+                if (l.Type == type)
+                {
+                    CurrentIndex = m_Layers.IndexOf(l);
+                }
+            }
+        }
+
+        public void DrawRectange(int x, int y, int width, int height, LayerType type)
         {
             if(!isValidIndex(m_CurrentIndex))
                 return;
+            _stwichLayerType(type);
+
             DrawingRectangle drawRect = new DrawingRectangle(x, y, width, height);
             CurrentLayer.AddDrawingShape(drawRect);
         }
-        public void DrawImage(Image source, Rectangle src, Rectangle dest)
+
+        public void DrawLine(int x1, int y1, int x2, int y2)
+        {
+            DrawLine(x1, y1, x2, y2, LayerType.TILEMAP);
+        }
+        
+        public void DrawLine(int x1, int y1, int x2, int y2, LayerType type)
         {
             if (!isValidIndex(m_CurrentIndex))
                 return;
+
+            _stwichLayerType(type);
+
+            DrawingLine drawLine = new DrawingLine(new Point(x1, y1), new Point(x2, y2));
+            CurrentLayer.AddDrawingShape(drawLine);
+        }
+
+        public void DrawImage(Image source, Rectangle src, Rectangle dest)
+        {
+            DrawImage(source, src, dest, LayerType.TILEMAP);
+        }
+
+        public void DrawImage(Image source, Rectangle src, Rectangle dest, LayerType type)
+        {
+            if (!isValidIndex(m_CurrentIndex))
+                return;
+
+            _stwichLayerType(type);
+
             DrawingImage image = new DrawingImage(source, src, dest);
             CurrentLayer.AddDrawingShape(image);
         }

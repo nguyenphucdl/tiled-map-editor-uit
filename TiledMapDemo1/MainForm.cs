@@ -36,17 +36,23 @@ namespace TiledMapDemo1
         private void RegisterWorkplaceEvents()
         {
             mainPanel.OnMouseWheelAction += workplacePanel_MouseWheel;
+            mainPanel.OnMouseDownAction = worlplaceGraphic_MouseDown;
             workplaceGraphic.OnDraw = DrawWorkplaceGraphic;
             workplaceGraphic.OnMove = WorkplaceGraphic_MouseMove;
             workplaceGraphic.OnSizeChange = WorkplaceGraphic_SizeChange;
             workplaceGraphic.MouseClick += workplaceGraphic_MouseClick;
             workplaceGraphic.OnMouseDownAction = worlplaceGraphic_MouseDown;
+            workplaceGraphic.OnMouseUpAction = worlplaceGraphic_MouseUp;
+            
+            
             tileSheetGraphic.OnDraw = DrawTileSheetGraphic;
             tileSheetGraphic.OnMove = tileSheetGraphic_MouseMove;
             tileSheetGraphic.MouseClick += tileSheetGraphic_MouseClick;
 
             workplaceModel.SetWorkPlaceGraphic(workplaceGraphic);
             workplaceModel.SetTileSheetGraphic(tileSheetGraphic);
+            workplaceModel.SetLayerTreeView(treeViewMapLayer);
+            workplaceModel.SetPropertyMapGrid(propertyGrid);
         }
 
         #endregion
@@ -139,6 +145,13 @@ namespace TiledMapDemo1
             }
         }
 
+        private void worlplaceGraphic_MouseUp(MouseEventArgs e)
+        {
+            if (workplaceModel.Initialized)
+            {
+                workplaceModel.worlplaceGraphic_MouseUp(this, e);
+            }
+        }
 
         private void worlplaceGraphic_MouseDown(MouseEventArgs e)
         {
@@ -164,8 +177,47 @@ namespace TiledMapDemo1
 
         private void btnRectDrawing_Click(object sender, EventArgs e)
         {
-            workplaceModel.Drawing = true;   
+            //workplaceModel.Drawing = true;   
         }
+
+        private void treeViewMapExplorer_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            workplaceModel.treeViewMapExplorer_AfterSelect(sender, e);
+        }
+
+        private void toolRectangleDrawing_Click(object sender, EventArgs e)
+        {
+            workplaceModel.Drawing = true;
+            workplaceModel.DrawingType = DrawingType.RECTANGLE;
+        }
+
+        private void toolLineDrawing_Click(object sender, EventArgs e)
+        {
+            workplaceModel.Drawing = true;
+            workplaceModel.DrawingType = DrawingType.LINE;
+        }
+
+        private void MainForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+                worlplaceGraphic_MouseDown(e);
+        }
+
+        private void toolRemoveLayer_Click(object sender, EventArgs e)
+        {
+            workplaceModel.toolRemoveLayer_Click(sender, e);
+        }
+
+        private void toolNewLayer_Click(object sender, EventArgs e)
+        {
+            workplaceModel.toolNewLayer_Click(sender, e);
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            workplaceModel.saveToolStripButton_Click(sender, e);
+        }
+
 
 
 

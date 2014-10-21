@@ -38,7 +38,7 @@ namespace TiledMapDemo1
 
             XElement mapElement = m_tmxDocument.Element("map");
             List<TileSet> tileSets = _parseListTileSets(mapElement.Elements("tileset"));
-            List<MapLayer> layers = _parseMapLayers(mapElement.Elements("layer"));
+            List<MapLayer> layers = _parseMapLayers(mapElement);
 
             TileMap parseTileMap = _parseTileMapInfo(mapElement);
             parseTileMap.Path = m_tmxFilePath;
@@ -69,11 +69,17 @@ namespace TiledMapDemo1
             return tileMap;
         }
 
-        private List<MapLayer> _parseMapLayers(IEnumerable<XElement> mapLayerElements)
+        private List<MapLayer> _parseMapLayers(XElement mapElement)
         {
             string layerName;
-            int layerWidth, layerHeight, gid;
+            int layerWidth, layerHeight, gid, mapWidth, mapHeight;
+
+            mapWidth = int.Parse(mapElement.Attribute("width").Value);
+            mapHeight = int.Parse(mapElement.Attribute("height").Value);
+
             List<MapLayer> layerList = new List<MapLayer>();
+
+            IEnumerable<XElement> mapLayerElements = mapElement.Elements("layer");
 
             foreach (XElement element in mapLayerElements)
             {
@@ -81,6 +87,7 @@ namespace TiledMapDemo1
                 layerWidth = int.Parse(element.Attribute("width").Value);
                 layerHeight = int.Parse(element.Attribute("height").Value);
                 MapLayer layer = new MapLayer(layerName, layerWidth, layerHeight);
+                layer.Type = LayerType.TILEMAP;
 
                 XElement dataElement = element.Element("data");
 
@@ -102,6 +109,16 @@ namespace TiledMapDemo1
 
                 layerList.Add(layer);
             }
+
+            XElement objectLayerElement = mapElement.Element("objectgroup");
+            if (objectLayerElement != null)
+            {
+                MapLayer objectLayer = new MapLayer("Object Layer", mapWidth, mapHeight);
+                objectLayer.Type = LayerType.OBJECT;
+                layerList.Add(objectLayer);
+            }
+
+
             return layerList;
         }
 
