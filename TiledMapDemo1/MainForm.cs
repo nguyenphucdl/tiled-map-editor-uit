@@ -31,7 +31,7 @@ namespace TiledMapDemo1
         {
             InitializeComponent();
             RegisterWorkplaceEvents();
-            workplaceModel.LoadTileMap(tiledMapFile);
+            //workplaceModel.LoadTileMap(tiledMapFile);
         }
         private void RegisterWorkplaceEvents()
         {
