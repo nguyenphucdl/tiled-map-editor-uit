@@ -5,10 +5,12 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TiledMapDemo1.Model;
 
 
 namespace TiledMapDemo1
 {
+
     public class Layer
     {
         #region Fields
@@ -16,6 +18,7 @@ namespace TiledMapDemo1
         protected int m_index;
         protected bool m_enable = true;
         protected bool m_serializable = true;
+        protected LayerType m_layerType = LayerType.NONE;
         protected LayerContext m_container;
         protected List<DrawingShape> m_shapes = new List<DrawingShape>();
         #endregion
@@ -46,6 +49,11 @@ namespace TiledMapDemo1
             get { return m_container; }
             set { m_container = value; }
         }
+        public LayerType Type
+        {
+            get { return m_layerType; }
+            set { m_layerType = value; }
+        }
         #endregion
 
         #region Contructors
@@ -54,6 +62,7 @@ namespace TiledMapDemo1
             this.Id = id;
             this.Index = index;
             this.Container = container;
+            this.Type = LayerType.NONE;
         }
         
         #endregion

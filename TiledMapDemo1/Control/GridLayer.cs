@@ -74,6 +74,12 @@ namespace TiledMapDemo1
             m_graphics.DrawRectangle(Pens.Cyan, region);
         }
 
+        public void DrawLineDirect(int x1, int y1, int x2, int y2, float zoom)
+        {
+            Pen pen = Pens.Cyan;
+            m_graphics.DrawLine(pen, new Point((int)(x1 * zoom), (int)(y1 * zoom)), new Point((int)(x2 * zoom), (int)(y2 * zoom)));
+        }
+
         public void SetGraphicsContext(Graphics graphics)
         {
             m_graphics = graphics;

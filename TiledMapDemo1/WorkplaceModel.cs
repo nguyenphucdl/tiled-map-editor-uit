@@ -10,6 +10,12 @@ using TiledMapDemo1.Model;
 
 namespace TiledMapDemo1
 {
+    public enum DrawingType
+    {
+        RECTANGLE,
+        LINE
+    }
+
     public class WorkplaceModel
     {
         #region Fields Renew
@@ -20,14 +26,14 @@ namespace TiledMapDemo1
         private BufferedGraphic m_TileSheetGraphic = null;
         private LayerContext m_WorkPlaceContext = null;
         private LayerContext m_TileSetContext = null;
-        //private List<MapLayer> m_MapLayers = null;
-        //private List<TileSet> m_Tilesets = null;
         private Dictionary<int, Tile> m_GidTileDict = null;
         private Dictionary<string, Image> m_ImageDict = null;
         private Dictionary<string, TileSet> m_TileSetDict = null;
         private Dictionary<string, MapLayer> m_MapLayerDict = null;
         private GridLayer m_WorkPlaceGrid = null;
         private GridLayer m_TileSheetGrid = null;
+        private TreeView m_LayersTreeView = null;
+        private PropertyGrid m_PropertyGrid = null;
         #endregion
 
         #region Setters & Getters
@@ -47,6 +53,14 @@ namespace TiledMapDemo1
         public void SetTileSheetGraphic(BufferedGraphic tileSheetGraphic)
         {
             m_TileSheetGraphic = tileSheetGraphic;
+        }
+        public void SetLayerTreeView(TreeView layerTreeView)
+        {
+            m_LayersTreeView = layerTreeView;
+        }
+        public void SetPropertyMapGrid(PropertyGrid propertyGrid)
+        {
+            m_PropertyGrid = propertyGrid;
         }
         public TileSet CurrentTileSet
         {
@@ -68,7 +82,7 @@ namespace TiledMapDemo1
         }
         #endregion
 
-        #region Functions
+        #region Load Map Functions
         public bool LoadTileMap(string mapPath)
         {
             if (!Init(mapPath))
@@ -99,6 +113,7 @@ namespace TiledMapDemo1
 
             m_TileMap = mapLoader.GetTileMap();
 
+
             foreach (TileSet tileSet in m_TileMap.TileSets)
             {
                 m_TileSetDict.Add(tileSet.Name, tileSet);
@@ -110,16 +125,54 @@ namespace TiledMapDemo1
             }
             return true;
         }
+
+        private void LoadTreeView()
+        {
+            Font boldFont = new Font(m_LayersTreeView.Font, FontStyle.Bold);
+            TreeNode mapRootNode = new TreeNode("Map");
+            TreeNode mapLayerNode = new TreeNode("Layers");
+            TreeNode mapTileSheetsNode = new TreeNode("Tile Sheets");
+            mapRootNode.NodeFont = boldFont;
+            mapLayerNode.NodeFont = boldFont;
+            mapTileSheetsNode.NodeFont = boldFont;
+            mapRootNode.Nodes.Add(mapLayerNode);
+            mapRootNode.Nodes.Add(mapTileSheetsNode);
+
+            #region Load Layers View
+            foreach (MapLayer l in m_MapLayerDict.Values)
+            {
+                TreeNode lNode = new TreeNode(l.Name);
+                lNode.Name = l.Name;
+                lNode.Tag = "Layer";
+                mapLayerNode.Nodes.Add(lNode);
+            }
+            foreach (TileSet tileSet in m_TileSetDict.Values)
+            {
+                TreeNode tNode = new TreeNode(tileSet.Name);
+                tNode.Name = tileSet.Name;
+                tNode.Tag = "TileSheet";
+                mapTileSheetsNode.Nodes.Add(tNode);
+            }
+            #endregion
+            m_LayersTreeView.Nodes.Clear();
+            m_LayersTreeView.Nodes.Add(mapRootNode);
+            m_LayersTreeView.ExpandAll();
+        }
+
         private void LoadWorkspace()
         {
             LoadGidDict();
             LoadMapLayer();
             ConfigGraphics();
             LoadGridLayer();
+            LoadTreeView();
         }
 
         private void LoadGidDict()
         {
+            m_TileSetContext.Clear();
+            m_ImageDict.Clear();
+
             foreach (TileSet tileSet in m_TileSetDict.Values)
             {
                 int firstId = tileSet.FirstId;
@@ -146,55 +199,74 @@ namespace TiledMapDemo1
                     }
                 }
             }
+            if (m_TileSetDict.Values.Count != 0)
+            {
+                m_TileSetContext.CurrentIndex = 0;
+                m_TileSetContext.HideAll();
+                m_TileSetContext.Show(0);
+            }
 
-            m_TileSetContext.CurrentIndex = 0;
-            m_TileSetContext.HideAll();
-            m_TileSetContext.Show(0);
+            m_TileSheetGraphic.Dirty = true;
         }
 
         private void LoadMapLayer()
         {
             int index = 10, drawId;
+            m_WorkPlaceContext.Clear();
 
             foreach (MapLayer layer in m_MapLayerDict.Values)
             {
-                m_WorkPlaceContext.AddLayer(layer.Name, 10);
-
-                // Render strict (1 layer render in 2 times)
-                // First draw i + j % 2 == 0
-                for (int j = 0; j < layer.Height; j++)
+                m_WorkPlaceContext.AddLayer(layer.Name, 10, layer.Type);
+                
+                if (layer.Type == LayerType.TILEMAP)
                 {
-                    for (int i = 0; i < layer.Width; i++)
+                    #region Render Tile Map Strict
+                    // Render strict (1 layer render in 2 times)
+                    // First draw i + j % 2 == 0
+                    for (int j = 0; j < layer.Height; j++)
                     {
-                        if ((i + j) % 2 == 0)
-                            continue;
-                        drawId = layer.TileIds[i, j];
-                        Tile temp = m_GidTileDict[drawId];
-                        Rectangle region = temp.Region;
-                        Rectangle dest = new Rectangle(i * m_TileMap.TileWidth - 1, j * m_TileMap.TileHeight - 1, m_TileMap.TileWidth + 2, m_TileMap.TileHeight + 2);
+                        for (int i = 0; i < layer.Width; i++)
+                        {
+                            if ((i + j) % 2 == 0)
+                                continue;
+                            drawId = layer.TileIds[i, j];
+                            Tile temp = m_GidTileDict[drawId];
+                            
+                            Rectangle region = temp.Region;
+                            Rectangle dest = new Rectangle(i * m_TileMap.TileWidth - 1, j * m_TileMap.TileHeight - 1, m_TileMap.TileWidth + 2, m_TileMap.TileHeight + 2);
 
-                        m_WorkPlaceContext.DrawImage(m_ImageDict[temp.Image.Name], region, dest);
+                            
+                            if(m_ImageDict.ContainsKey(temp.Image.Name))
+                                m_WorkPlaceContext.DrawImage(m_ImageDict[temp.Image.Name], region, dest);
 
+                        }
                     }
-                }
-                // Second draw i + j % 2 != 0
-                for (int j = 0; j < layer.Height; j++)
-                {
-                    for (int i = 0; i < layer.Width; i++)
+                    // Second draw i + j % 2 != 0
+                    for (int j = 0; j < layer.Height; j++)
                     {
-                        if ((i + j) % 2 != 0)
-                            continue;
-                        drawId = layer.TileIds[i, j];
-                        Tile temp = m_GidTileDict[drawId];
-                        Rectangle region = temp.Region;
-                        Rectangle dest = new Rectangle(i * m_TileMap.TileWidth, j * m_TileMap.TileHeight, m_TileMap.TileWidth, m_TileMap.TileHeight);
-
-                        m_WorkPlaceContext.DrawImage(m_ImageDict[temp.Image.Name], region, dest);
+                        for (int i = 0; i < layer.Width; i++)
+                        {
+                            if ((i + j) % 2 != 0)
+                                continue;
+                            drawId = layer.TileIds[i, j];
+                            Tile temp = m_GidTileDict[drawId];
+                            
+                            Rectangle region = temp.Region;
+                            Rectangle dest = new Rectangle(i * m_TileMap.TileWidth, j * m_TileMap.TileHeight, m_TileMap.TileWidth, m_TileMap.TileHeight);
+                            if (m_ImageDict.ContainsKey(temp.Image.Name))
+                                m_WorkPlaceContext.DrawImage(m_ImageDict[temp.Image.Name], region, dest);
+                        }
                     }
+                    #endregion
                 }
 
                 index += 10;
             }
+
+            m_WorkPlaceGraphic.Dirty = true;
+            #region Load Layers Tree View
+            
+            #endregion
         }
 
         private void LoadGridLayer()
@@ -230,31 +302,22 @@ namespace TiledMapDemo1
         }
         #endregion
 
-
-
-
-
-
-
-
-
         #region Drawing
         private bool m_drawing = false;
+        private DrawingType m_drawingType = DrawingType.RECTANGLE;
 
         public bool Drawing
         {
             get { return m_drawing; }
             set { m_drawing = value; }
         }
-        
+
+        public DrawingType DrawingType
+        {
+            get { return m_drawingType; }
+            set { m_drawingType = value; }
+        }
         #endregion
-
-
-
-
-
-
-
 
         #region Functions
 
@@ -264,14 +327,83 @@ namespace TiledMapDemo1
                 m_WorkPlaceGrid.SetGraphicsContext(m_WorkPlaceGraphic.CreateGraphics());
         }
 
-        
+        public void treeViewMapExplorer_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            String nodeText = e.Node.Name;
+            if (e.Node.Tag != null)
+            {
+                String nodeTag = e.Node.Tag.ToString();
+                if (nodeTag == "Layer")
+                {
+                    m_PropertyGrid.SelectedObject = m_MapLayerDict[nodeText];
+                }
+                else if(nodeTag == "TileSheet")
+                {
+                    m_PropertyGrid.SelectedObject = m_TileSetDict[nodeText];
+                }
+            }
+        }
+
+        public void ResetPropertyGrid()
+        {
+            m_PropertyGrid.SelectedObject = null;
+        }
+        #region Add & Remove Layer
+        public void toolRemoveLayer_Click(object sender, EventArgs e)
+        {
+            TreeNode removeNode = m_LayersTreeView.SelectedNode;
+            if (removeNode.Tag != null)
+            {
+                String tagName = removeNode.Tag.ToString();
+                if (tagName == "Layer")
+                {
+                    m_MapLayerDict.Remove(removeNode.Name);
+                    if (removeNode.Name == "Object Layer")
+                    {
+                        m_WorkPlaceContext.RemoveLayer(removeNode.Name);
+                    }
+                }
+                else if (tagName == "TileSheet")
+                {
+                    m_TileSetDict.Remove(removeNode.Name);
+                    LoadGidDict();
+                    LoadMapLayer();
+                }
+                
+                LoadTreeView();
+                ResetPropertyGrid();
+                m_WorkPlaceGraphic.Dirty = true;
+            }
+            
+
+        }
+
+        public void toolNewLayer_Click(object sender, EventArgs e)
+        {
+            if(!m_MapLayerDict.ContainsKey("Object Layer"))
+            {
+                MapLayer newLayer = new MapLayer("Object Layer", m_TileMap.Width, m_TileMap.Height);
+                newLayer.Type = LayerType.OBJECT;
+                m_MapLayerDict.Add(newLayer.Name, newLayer);
+                m_WorkPlaceContext.AddLayer(newLayer.Name, 10, LayerType.OBJECT);
+                LoadTreeView();
+            }
+        }
+        #endregion
+
+        #region Save
+        public void saveToolStripButton_Click(object sender, EventArgs e)
+        { 
+
+        }
+        #endregion
 
         public void WorkplaceGraphic_MouseMove(MainForm owner, MouseEventArgs e)
         {
             if (!Initialized)
                 return;
 
-            int cellSize = (int)(16 * m_WorkPlaceGraphic.Zoom);
+            int cellSize = (int)(CurrentTileSet.TileWidth * m_WorkPlaceGraphic.Zoom);
             Point movePoint = new Point(e.X / cellSize, e.Y / cellSize);
 
             int gid = m_TileMap.Layers[0].TileIds[movePoint.X, movePoint.Y];
@@ -289,53 +421,166 @@ namespace TiledMapDemo1
                 m_WorkPlaceGrid.DrawDirect(srcImg, dest, src, m_WorkPlaceGraphic.Zoom);
             }
 
-            owner.lblPosMove.Text = "Index [" + movePoint.X + "," + movePoint.Y + "], e[" + e.X + "," + e.Y + "]";
-            owner.lblGid.Text = "Gid [" + gid + "]";
-
             if (Drawing)
             {
-                if(m_BeginDrawingPoint.X == -1 || m_BeginDrawingPoint.Y == -1)
+                if (m_BeginDrawingPoint.X == -1 || m_BeginDrawingPoint.Y == -1)
                     return;
-                Point beginPoint = new Point((int)(m_BeginDrawingPoint.X * m_WorkPlaceGraphic.Zoom),(int)(m_BeginDrawingPoint.Y * m_WorkPlaceGraphic.Zoom));
+                Point beginPoint = new Point((int)(m_BeginDrawingPoint.X * m_WorkPlaceGraphic.Zoom), (int)(m_BeginDrawingPoint.Y * m_WorkPlaceGraphic.Zoom));
                 Point toPoint = new Point((int)(e.X * m_WorkPlaceGraphic.Zoom), (int)(e.Y * m_WorkPlaceGraphic.Zoom));
-                int deltaX = toPoint.X - beginPoint.X;
-                int deltaY = toPoint.Y - beginPoint.Y;
-                Point location = new Point();
-                if (deltaX > 0 && deltaY > 0)
-                {
-                    location = new Point(beginPoint.X, beginPoint.Y);
-                }
-                else if (deltaX > 0 && deltaY < 0)
-                {
-                    location = new Point(beginPoint.X, beginPoint.Y + deltaY);
-                }
-                else if (deltaY > 0)
-                {
-                    location = new Point(toPoint.X, toPoint.Y - deltaY);
-                }
-                else
-                {
-                    location = new Point(toPoint.X, toPoint.Y);
-                }
 
-                m_WorkPlaceGrid.DrawRectangleDirect(location.X, location.Y, (int)Math.Abs(deltaX), (int)Math.Abs(deltaY), 1 / m_WorkPlaceGraphic.Zoom);
 
+                if (DrawingType == DrawingType.RECTANGLE)
+                {
+                    int deltaX = toPoint.X - beginPoint.X;
+                    int deltaY = toPoint.Y - beginPoint.Y;
+                    Point location = new Point();
+                    if (deltaX > 0 && deltaY > 0)
+                    {
+                        location = new Point(beginPoint.X, beginPoint.Y);
+                    }
+                    else if (deltaX > 0 && deltaY < 0)
+                    {
+                        location = new Point(beginPoint.X, beginPoint.Y + deltaY);
+                    }
+                    else if (deltaY > 0)
+                    {
+                        location = new Point(toPoint.X, toPoint.Y - deltaY);
+                    }
+                    else
+                    {
+                        location = new Point(toPoint.X, toPoint.Y);
+                    }
+
+                    m_WorkPlaceGrid.DrawRectangleDirect(location.X, location.Y, (int)Math.Abs(deltaX), (int)Math.Abs(deltaY), 1 / m_WorkPlaceGraphic.Zoom);
+                }
+                else if (DrawingType == DrawingType.LINE)
+                {
+                    m_WorkPlaceGrid.DrawLineDirect(beginPoint.X, beginPoint.Y, toPoint.X, toPoint.Y, 1/ m_WorkPlaceGraphic.Zoom);
+                }
+                
+                
             }
+
+
+            owner.lblPosMove.Text = "Index [" + movePoint.X + "," + movePoint.Y + "], e[" + e.X + "," + e.Y + "]";
+            owner.lblGid.Text = "Gid [" + gid + "]";        
         }
 
         Point m_BeginDrawingPoint = new Point(-1, -1);
 
         public void workplaceGraphic_MouseClick(MainForm mainForm, MouseEventArgs e)
         {
-            //if (Drawing)
-            //    m_BeginDrawingPoint = new Point((int)(m_WorkPlaceGraphic.Zoom), (int)(m_WorkPlaceGraphic.Zoom));
+            if (_sheetChoose.Count != 0)
+            {
+                Drawing = false;
+                Point idx = MapIndexOfPoint(new Point(e.X, e.Y));
+
+                Image srcImg = m_ImageDict[m_GidTileDict[_sheetChoose[0]].Image.Name];
+                Tile tile = m_GidTileDict[_sheetChoose[0]];
+                Rectangle src = m_GidTileDict[_sheetChoose[0]].Region;
+                Rectangle dest = new Rectangle(idx.X * m_TileMap.Size.TileWidth, idx.Y * m_TileMap.Size.TileHeight, src.Width + 2, src.Height + 2);
+
+                
+                
+                m_WorkPlaceContext.DrawImage(srcImg, src, dest, LayerType.TILEMAP);
+
+                
+                m_WorkPlaceGraphic.Dirty = true;
+            }
+
+            
+        }
+
+        private Point MapIndexOfPoint(Point e)
+        {
+            int cellSize = (int)(CurrentTileSet.TileWidth * m_WorkPlaceGraphic.Zoom);
+            Point idx = new Point(e.X / cellSize, e.Y / cellSize);
+            return idx;
+        }
+
+        private int MapGidOfPoint(Point e)
+        {
+            Point idx = MapIndexOfPoint(e);
+            return m_TileMap.Layers[0].TileIds[idx.X, idx.Y];
+        }
+
+        private void ResetDrawingState()
+        {
+            m_BeginDrawingPoint = new Point(-1, -1);
+            Drawing = false;
+            Tile oldTile = null;
+            foreach (int oldGid in _sheetChoose)
+            {
+                if (!_sheetChoose.Contains(oldGid))
+                    return;
+                if (!m_GidTileDict.TryGetValue(oldGid, out oldTile))
+                    return;
+
+                m_TileSheetGrid.RemoveRegion(oldTile.Region);
+                //_sheetChoose.Remove(oldGid);
+            }
+            _sheetChoose.Clear();
+            m_TileSheetGraphic.Dirty = true;
         }
 
         public void worlplaceGraphic_MouseDown(MainForm mainForm, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Right)
+            {
+                ResetDrawingState();
+            }
+
             if (Drawing)
                 m_BeginDrawingPoint = new Point(e.X, e.Y);
         }
+
+        public void worlplaceGraphic_MouseUp(MainForm mainForm, MouseEventArgs e)
+        {
+            if (Drawing)
+            {
+                if (m_BeginDrawingPoint.X == -1 || m_BeginDrawingPoint.Y == -1)
+                    return;
+                Point beginPoint = new Point((int)(m_BeginDrawingPoint.X * 1/ m_WorkPlaceGraphic.Zoom), (int)(m_BeginDrawingPoint.Y * 1/ m_WorkPlaceGraphic.Zoom));
+                Point toPoint = new Point((int)(e.X * 1/ m_WorkPlaceGraphic.Zoom), (int)(e.Y * 1/ m_WorkPlaceGraphic.Zoom));
+
+                if (DrawingType == DrawingType.RECTANGLE)
+                {
+                    int deltaX = toPoint.X - beginPoint.X;
+                    int deltaY = toPoint.Y - beginPoint.Y;
+                    Point location = new Point();
+                    if (deltaX > 0 && deltaY > 0)
+                    {
+                        location = new Point(beginPoint.X, beginPoint.Y);
+                    }
+                    else if (deltaX > 0 && deltaY < 0)
+                    {
+                        location = new Point(beginPoint.X, beginPoint.Y + deltaY);
+                    }
+                    else if (deltaY > 0)
+                    {
+                        location = new Point(toPoint.X, toPoint.Y - deltaY);
+                    }
+                    else
+                    {
+                        location = new Point(toPoint.X, toPoint.Y);
+                    }
+
+                    //m_WorkPlaceGrid.DrawRectangleDirect(location.X, location.Y, (int)Math.Abs(deltaX), (int)Math.Abs(deltaY), 1 / m_WorkPlaceGraphic.Zoom);
+
+                    m_WorkPlaceContext.DrawRectange(location.X, location.Y, (int)(deltaX), (int)(deltaY), LayerType.OBJECT);
+                    
+                }
+                else if (DrawingType == DrawingType.LINE)
+                {
+                    m_WorkPlaceContext.DrawLine(beginPoint.X, beginPoint.Y, toPoint.X, toPoint.Y, LayerType.OBJECT);
+                }
+                
+                m_WorkPlaceGraphic.Dirty = true;
+                m_BeginDrawingPoint.X = -1;
+                m_BeginDrawingPoint.Y = -1;
+            }
+        }
+
 
         public void tileSheetGraphic_MouseMove(MainForm owner, MouseEventArgs e)
         {
@@ -366,25 +611,33 @@ namespace TiledMapDemo1
         {
             if (!Initialized)
                 return;
-            int cellSize = (int)(16 * m_TileSheetGraphic.Zoom);
+
+            int cellSize = (int)(CurrentTileSet.TileWidth * m_TileSheetGraphic.Zoom);
             Point movePoint = new Point(e.X / cellSize, e.Y / cellSize);
-            int gid = movePoint.Y * 11 + movePoint.X + 1;
-            Tile tile = null;
+            int gid = movePoint.Y * CurrentTileSet.Dimension.X + movePoint.X + 1;
+            Tile tile, oldTile = null;
             
             if (m_GidTileDict.TryGetValue(gid, out tile))
             {
-                if (_sheetChoose.Contains(gid))
+                if (_sheetChoose.Count != 0)
                 {
-                    m_TileSheetGrid.RemoveRegion(tile.Region);
-                    _sheetChoose.Remove(gid);
+                    int oldGid = _sheetChoose[0];
+
+                    if (!_sheetChoose.Contains(oldGid))
+                        return;
+                    if(!m_GidTileDict.TryGetValue(oldGid, out oldTile))
+                        return;
+
+                    m_TileSheetGrid.RemoveRegion(oldTile.Region);
+                    _sheetChoose.Remove(oldGid);
+                    
                 }
-                else
-                {
-                    DrawingRectangle shape = new DrawingRectangle(tile.Region.X, tile.Region.Y, tile.Region.Width, tile.Region.Height);
-                    shape.DrawingPen = new Pen(Brushes.DarkBlue, 2);
-                    m_TileSheetGrid.AddDrawingShape(shape);
-                    _sheetChoose.Add(gid);
-                }
+                  
+                DrawingRectangle shape = new DrawingRectangle(tile.Region.X, tile.Region.Y, tile.Region.Width, tile.Region.Height);
+                shape.DrawingPen = new Pen(Brushes.Red, 2);
+                m_TileSheetGrid.AddDrawingShape(shape);
+                _sheetChoose.Add(gid);
+                
                 m_TileSheetGraphic.Dirty = true;
             }
         }
@@ -403,8 +656,5 @@ namespace TiledMapDemo1
             m_TileSetContext.Draw(graphics);
         }
         #endregion
-
-
-        
     }
 }

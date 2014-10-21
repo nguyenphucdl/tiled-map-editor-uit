@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,34 +13,44 @@ namespace TiledMapDemo1.Model
         /*
          * The first global tile ID of this tileset (this global ID maps to the first tile in this tileset).
          */
+        [CategoryAttribute("TileSet Info")]
         public int FirstId { get; set; }
 
+        [CategoryAttribute("TileSet Info")]
         public int LastId { get; set; }
 
+        [CategoryAttribute("TileSet Info")]
         public string Name { get; set; }
 
+        [CategoryAttribute("TileSet Info")]
         public int TileWidth { get; set; }
 
+        [CategoryAttribute("TileSet Info")]
         public int TileHeight { get; set; }
 
+        [BrowsableAttribute(false)]
         public TileSetImage Image { get; set; }
 
+        [CategoryAttribute("TileSet Info")]
         public int Count { 
             get {
                 return LastId - FirstId + 1;
             }
         }
 
+        [CategoryAttribute("TileSet Info")]
         public int Width
         {
             get { return Image.Width; }
         }
 
+        [CategoryAttribute("TileSet Info")]
         public int Height
         {
             get { return Image.Height; }
         }
 
+        [CategoryAttribute("TileSet Info")]
         public Point Dimension
         {
             get

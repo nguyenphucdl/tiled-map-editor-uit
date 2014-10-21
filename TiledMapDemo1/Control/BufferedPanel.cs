@@ -110,9 +110,15 @@ namespace TiledMapDemo1
 
         #region Delegates
         public Action<MouseEventArgs> OnMouseWheelAction;
+        public Action<MouseEventArgs> OnMouseDownAction;
         #endregion
 
         #region Events
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (OnMouseDownAction != null)
+                OnMouseDownAction(e);
+        }
         protected override void OnSizeChanged(EventArgs e)
         {
             ApdaptSizeGraphicsBuffer();
