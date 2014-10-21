@@ -37,7 +37,7 @@ namespace TiledMapDemo1
                 for (int j = 0; j < tileMap.Size.Dimension.X; j++)
                 {
                     XElement tileElement = new XElement("tile",
-                                                new XAttribute("gid", tileMap.Layers[0].TileIds[i, j]));
+                                                new XAttribute("gid", (tileMap.Layers[0] as TileMapLayer).TileIds[i, j]));
                     mapData.Add(tileElement);
                 }
             mapLayerElement.Add(mapData);

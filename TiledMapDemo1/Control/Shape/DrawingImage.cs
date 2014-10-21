@@ -12,6 +12,7 @@ namespace TiledMapDemo1
         private Rectangle m_dest;
         private Rectangle m_src;
         private Image m_source;
+        
 
         public DrawingImage(Image source,Rectangle src, Rectangle dest)
         {

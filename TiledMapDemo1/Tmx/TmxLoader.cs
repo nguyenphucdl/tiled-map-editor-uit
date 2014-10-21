@@ -86,7 +86,7 @@ namespace TiledMapDemo1
                 layerName = element.Attribute("name").Value;
                 layerWidth = int.Parse(element.Attribute("width").Value);
                 layerHeight = int.Parse(element.Attribute("height").Value);
-                MapLayer layer = new MapLayer(layerName, layerWidth, layerHeight);
+                TileMapLayer layer = new TileMapLayer(layerName, layerWidth, layerHeight);
                 layer.Type = LayerType.TILEMAP;
 
                 XElement dataElement = element.Element("data");
@@ -113,8 +113,52 @@ namespace TiledMapDemo1
             XElement objectLayerElement = mapElement.Element("objectgroup");
             if (objectLayerElement != null)
             {
-                MapLayer objectLayer = new MapLayer("Object Layer", mapWidth, mapHeight);
+                TileObjectGroup objectLayer = new TileObjectGroup("Object Layer", mapWidth, mapHeight);
                 objectLayer.Type = LayerType.OBJECT;
+
+                IEnumerable<XElement> objectElements = objectLayerElement.Elements("object");
+
+                int x_o, y_o, width_o, height_o;
+
+                foreach (XElement elem in objectElements)
+                {
+
+
+                    x_o = CommonUtil.SafeGetAttributeInt(elem, "x");
+                    y_o = CommonUtil.SafeGetAttributeInt(elem, "y");
+                    width_o = CommonUtil.SafeGetAttributeInt(elem, "width");
+                    height_o = CommonUtil.SafeGetAttributeInt(elem, "height");
+
+
+                    TileObject tileObject = new TileObject();
+                    tileObject.Name = CommonUtil.SafeGetAttributeString(elem, "name");
+                    tileObject.Type = CommonUtil.SafeGetAttributeString(elem, "type");
+                    tileObject.Position = new System.Drawing.Point(x_o, y_o);
+                    tileObject.Size = new System.Drawing.Size(width_o, height_o);
+
+                    // Check polygon
+                    XElement polygonElem = elem.Element("polygon");
+                    if (polygonElem != null)
+                    {
+                        // Do something
+                    }
+                    XElement polyLineElem = elem.Element("polyline");
+                    if (polyLineElem != null)
+                    {
+                        // Do something
+                        string dataLines = polyLineElem.Attribute("points").Value;
+                        //string[] points = dataLines.Split(' ', ',');
+
+                        //points[0] = x_o.ToString();
+                        //points[1] = y_o.ToString();
+                        tileObject.ObjectType = TileObjectType.POLYLINE;
+                        tileObject.Data = dataLines;
+                    }
+
+                    objectLayer.AddObject(tileObject);
+                }
+
+
                 layerList.Add(objectLayer);
             }
 

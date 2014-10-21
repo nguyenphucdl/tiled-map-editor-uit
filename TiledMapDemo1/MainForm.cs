@@ -17,7 +17,7 @@ namespace TiledMapDemo1
     public partial class MainForm : Form
     {
         
-        string tiledMapFile = @"C:\Users\HP Destiny\Documents\Visual Studio 2012\Projects\TiledMapDemo1\TiledMapDemo1\bin\Debug\map1-2\map1-2.tmx";
+        string tiledMapFile = @"map1-2\map1-2.tmx";
 
         WorkplaceModel workplaceModel = new WorkplaceModel();
 
@@ -31,7 +31,7 @@ namespace TiledMapDemo1
         {
             InitializeComponent();
             RegisterWorkplaceEvents();
-            //workplaceModel.LoadTileMap(tiledMapFile);
+            workplaceModel.LoadTileMap(tiledMapFile);
         }
         private void RegisterWorkplaceEvents()
         {

@@ -217,19 +217,21 @@ namespace TiledMapDemo1
             foreach (MapLayer layer in m_MapLayerDict.Values)
             {
                 m_WorkPlaceContext.AddLayer(layer.Name, 10, layer.Type);
-                
+
                 if (layer.Type == LayerType.TILEMAP)
                 {
+                    TileMapLayer tileMapLayer = (TileMapLayer)layer;
+
                     #region Render Tile Map Strict
                     // Render strict (1 layer render in 2 times)
                     // First draw i + j % 2 == 0
-                    for (int j = 0; j < layer.Height; j++)
+                    for (int j = 0; j < tileMapLayer.Height; j++)
                     {
-                        for (int i = 0; i < layer.Width; i++)
+                        for (int i = 0; i < tileMapLayer.Width; i++)
                         {
                             if ((i + j) % 2 == 0)
                                 continue;
-                            drawId = layer.TileIds[i, j];
+                            drawId = tileMapLayer.TileIds[i, j];
                             Tile temp = m_GidTileDict[drawId];
                             
                             Rectangle region = temp.Region;
@@ -242,19 +244,56 @@ namespace TiledMapDemo1
                         }
                     }
                     // Second draw i + j % 2 != 0
-                    for (int j = 0; j < layer.Height; j++)
+                    for (int j = 0; j < tileMapLayer.Height; j++)
                     {
-                        for (int i = 0; i < layer.Width; i++)
+                        for (int i = 0; i < tileMapLayer.Width; i++)
                         {
                             if ((i + j) % 2 != 0)
                                 continue;
-                            drawId = layer.TileIds[i, j];
+                            drawId = tileMapLayer.TileIds[i, j];
                             Tile temp = m_GidTileDict[drawId];
                             
                             Rectangle region = temp.Region;
                             Rectangle dest = new Rectangle(i * m_TileMap.TileWidth, j * m_TileMap.TileHeight, m_TileMap.TileWidth, m_TileMap.TileHeight);
                             if (m_ImageDict.ContainsKey(temp.Image.Name))
                                 m_WorkPlaceContext.DrawImage(m_ImageDict[temp.Image.Name], region, dest);
+                        }
+                    }
+                    #endregion
+                }
+                else if (layer.Type == LayerType.OBJECT)
+                {
+                    TileObjectGroup tileObjectGroup = (TileObjectGroup)layer;
+
+                    #region render Object
+                    foreach (TileObject tiobj in tileObjectGroup.Objects)
+                    {
+                        if (tiobj.ObjectType == TileObjectType.NORMAL)
+                        {
+                            Point pos = tiobj.Position;
+                            Size size = (tiobj.Size.Width != -1)? tiobj.Size: new Size(1, 1);
+
+                            m_WorkPlaceContext.DrawRectange(pos.X, pos.Y, size.Width, size.Height, LayerType.OBJECT);
+                        }
+                        else if (tiobj.ObjectType == TileObjectType.POLYLINE)
+                        {
+                            string dataLines = tiobj.Data.ToString();
+
+                            string[] dataPoints = dataLines.Split(' ', ',');
+
+                            Point porigin = tiobj.Position;
+                            Point pfrom = porigin, pto = new Point(-1, -1);
+                            int xOffset, yOffset = 0;
+                            
+                            for (int i = 2; i < dataPoints.Length; i += 2)
+                            {
+                                xOffset = int.Parse(dataPoints[i]);
+                                yOffset = int.Parse(dataPoints[i + 1]);
+                                
+                                pto = new Point(porigin.X + xOffset, porigin.Y + yOffset);
+                                m_WorkPlaceContext.DrawLine(pfrom.X, pfrom.Y, pto.X, pto.Y, LayerType.OBJECT);
+                                pfrom = pto;
+                            }
                         }
                     }
                     #endregion
@@ -393,8 +432,10 @@ namespace TiledMapDemo1
 
         #region Save
         public void saveToolStripButton_Click(object sender, EventArgs e)
-        { 
-
+        {
+            TmxWriter mapWriter = new TmxWriter(m_TileMap);
+            mapWriter.Read();
+            mapWriter.Save(@"map1-2\map1-2.tmx");
         }
         #endregion
 
@@ -406,7 +447,8 @@ namespace TiledMapDemo1
             int cellSize = (int)(CurrentTileSet.TileWidth * m_WorkPlaceGraphic.Zoom);
             Point movePoint = new Point(e.X / cellSize, e.Y / cellSize);
 
-            int gid = m_TileMap.Layers[0].TileIds[movePoint.X, movePoint.Y];
+            TileMapLayer tileMapLayer = (TileMapLayer)m_TileMap.Layers[0];
+            int gid = tileMapLayer.TileIds[movePoint.X, movePoint.Y];
 
 
             if(!Drawing)
@@ -480,7 +522,8 @@ namespace TiledMapDemo1
                 Rectangle src = m_GidTileDict[_sheetChoose[0]].Region;
                 Rectangle dest = new Rectangle(idx.X * m_TileMap.Size.TileWidth, idx.Y * m_TileMap.Size.TileHeight, src.Width + 2, src.Height + 2);
 
-                
+                TileMapLayer tileMapLayer = (TileMapLayer)m_TileMap.Layers[0];
+                tileMapLayer.TileIds[idx.X, idx.Y] = tile.Id; // Update tile map
                 
                 m_WorkPlaceContext.DrawImage(srcImg, src, dest, LayerType.TILEMAP);
 
@@ -501,7 +544,7 @@ namespace TiledMapDemo1
         private int MapGidOfPoint(Point e)
         {
             Point idx = MapIndexOfPoint(e);
-            return m_TileMap.Layers[0].TileIds[idx.X, idx.Y];
+            return (m_TileMap.Layers[0] as TileMapLayer).TileIds[idx.X, idx.Y];
         }
 
         private void ResetDrawingState()
@@ -542,7 +585,7 @@ namespace TiledMapDemo1
                     return;
                 Point beginPoint = new Point((int)(m_BeginDrawingPoint.X * 1/ m_WorkPlaceGraphic.Zoom), (int)(m_BeginDrawingPoint.Y * 1/ m_WorkPlaceGraphic.Zoom));
                 Point toPoint = new Point((int)(e.X * 1/ m_WorkPlaceGraphic.Zoom), (int)(e.Y * 1/ m_WorkPlaceGraphic.Zoom));
-
+                TileObject tiObj = new TileObject(); 
                 if (DrawingType == DrawingType.RECTANGLE)
                 {
                     int deltaX = toPoint.X - beginPoint.X;
@@ -568,13 +611,36 @@ namespace TiledMapDemo1
                     //m_WorkPlaceGrid.DrawRectangleDirect(location.X, location.Y, (int)Math.Abs(deltaX), (int)Math.Abs(deltaY), 1 / m_WorkPlaceGraphic.Zoom);
 
                     m_WorkPlaceContext.DrawRectange(location.X, location.Y, (int)(deltaX), (int)(deltaY), LayerType.OBJECT);
+
+                    tiObj = new TileObject("", location, new Size((int)(deltaX), (int)(deltaY)));
+                    
                     
                 }
                 else if (DrawingType == DrawingType.LINE)
                 {
                     m_WorkPlaceContext.DrawLine(beginPoint.X, beginPoint.Y, toPoint.X, toPoint.Y, LayerType.OBJECT);
+
+                    StringBuilder strBuilder = new StringBuilder();
+                    strBuilder.AppendFormat("{0},{1}",beginPoint.X - beginPoint.X, beginPoint.Y - beginPoint.Y);
+                    strBuilder.AppendFormat(" {0},{1}", toPoint.X - beginPoint.X, toPoint.Y - beginPoint.Y);
+
+                    string dataLines = strBuilder.ToString();
+
+                    tiObj = new TileObject("", new Point(beginPoint.X, beginPoint.Y), new Size(-1, -1));
+                    tiObj.ObjectType = TileObjectType.POLYLINE;
+                    tiObj.Position = beginPoint;
+                    tiObj.Data = dataLines;
                 }
-                
+                // Update tilemap Object layer
+                foreach (MapLayer l in m_TileMap.Layers)
+                {
+                    if (l.Type == LayerType.OBJECT)
+                    {
+                        TileObjectGroup tileObjGr = (TileObjectGroup)l;
+                        tileObjGr.AddObject(tiObj);
+                    }
+                }
+
                 m_WorkPlaceGraphic.Dirty = true;
                 m_BeginDrawingPoint.X = -1;
                 m_BeginDrawingPoint.Y = -1;

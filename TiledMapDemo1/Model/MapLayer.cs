@@ -30,8 +30,8 @@ namespace TiledMapDemo1.Model
         ReadOnlyAttribute(true)]
         public int Height { get; set; }
 
-        [BrowsableAttribute(false)]
-        public int[,] TileIds { get; set; }
+        //[BrowsableAttribute(false)]
+        //public int[,] TileIds { get; set; } // OLD
 
         [CategoryAttribute("Layer Info")]
         public bool Visible { get; set; }
@@ -43,8 +43,6 @@ namespace TiledMapDemo1.Model
             Width = width;
 
             Height = height;
-
-            TileIds = null;
 
             Visible = true;
 
@@ -59,8 +57,6 @@ namespace TiledMapDemo1.Model
 
             Height = -1;
 
-            TileIds = null;
-
             Visible = true;
 
             Type = LayerType.NONE;
@@ -73,8 +69,6 @@ namespace TiledMapDemo1.Model
             Width = mapLayer.Width;
 
             Height = mapLayer.Height;
-
-            TileIds = mapLayer.TileIds;
 
             Visible = true;
 

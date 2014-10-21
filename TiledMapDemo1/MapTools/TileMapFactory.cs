@@ -40,7 +40,7 @@ namespace TiledMapDemo1.MapTools
 
         public static MapLayer createMapLayer(string name, int width, int height, int[,] tileIds)
         {
-            MapLayer mapLayer = new MapLayer(name, width, height);
+            TileMapLayer mapLayer = new TileMapLayer(name, width, height);
             mapLayer.TileIds = tileIds;
             return mapLayer;
         }

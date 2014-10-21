@@ -13,6 +13,13 @@ namespace TiledMapDemo1
         private int m_y;
         private int m_width;
         private int m_height;
+        private DrawingType m_type;
+
+        public DrawingType Type
+        {
+            get { return m_type; }
+            set { m_type = value; }
+        }
 
         public DrawingRectangle(int x, int y, int width, int height)
         {
@@ -20,6 +27,7 @@ namespace TiledMapDemo1
             m_y = y;
             m_width = width;
             m_height = height;
+            Type = DrawingType.RECTANGLE;
         }
 
         public override void Draw(Graphics graphics)

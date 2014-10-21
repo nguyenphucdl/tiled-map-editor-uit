@@ -11,6 +11,14 @@ namespace TiledMapDemo1
     {
         private Point m_pt1;
         private Point m_pt2;
+        private DrawingType m_type;
+
+        public DrawingType Type
+        {
+            get { return m_type; }
+            set { m_type = value; }
+        }
+
 
         public DrawingLine(Point x, Point y)
         {

@@ -82,6 +82,9 @@
     <Compile Include="MapTools\TileCell.cs" />
     <Compile Include="MapTools\ImageToMap.cs" />
     <Compile Include="MapTools\TileMapFactory.cs" />
+    <Compile Include="Model\TileMapLayer.cs" />
+    <Compile Include="Model\TileObjectGroup.cs" />
+    <Compile Include="Model\TileObject.cs" />
     <Compile Include="Model\MapLayer.cs" />
     <Compile Include="Model\Tile.cs" />
     <Compile Include="Model\TileMap.cs" />
@@ -90,8 +93,10 @@
     <Compile Include="Model\TileSetImage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tmx\TmxFormat.cs" />
     <Compile Include="Tmx\TmxLoader.cs" />
+    <Compile Include="Tmx\TmxFormat.cs" />
+    <Compile Include="Tmx\TmxWriter.cs" />
+    <Compile Include="Utils\CommonUtil.cs" />
     <Compile Include="Utils\FileUtility.cs" />
     <Compile Include="Utils\ImageUtility.cs" />
     <Compile Include="Utils\Utils.cs" />
