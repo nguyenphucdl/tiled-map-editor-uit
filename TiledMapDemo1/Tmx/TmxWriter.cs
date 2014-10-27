@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -126,6 +127,10 @@ namespace TiledMapDemo1
                             objElem.SetAttributeValue("width", tiobj.Size.Width);
                             objElem.SetAttributeValue("height", tiobj.Size.Height);
                         }
+                        if (tiobj.Color != Color.Pink)
+                        {
+                            objElem.SetAttributeValue("color", ColorTranslator.ToHtml(tiobj.Color));
+                        }
                         if (tiobj.ObjectType == TileObjectType.POLYLINE)
                         {
                             XElement polylineElem = new XElement("polyline");
@@ -139,12 +144,61 @@ namespace TiledMapDemo1
                 }
             }
 
+            // Parse Quadtree Layers
+            if (m_tileMap.Quadtree != null)
+            {
+                Quadtree.Quadtree quadtree = m_tileMap.Quadtree;
+                XElement quadtreeElem = new XElement("quadtree");
+                quadtreeElem.SetAttributeValue("width", quadtree.Bound.Width);
+                quadtreeElem.SetAttributeValue("height", quadtree.Bound.Height);
+                quadtreeElem.SetAttributeValue("x", quadtree.Bound.X);
+                quadtreeElem.SetAttributeValue("y", quadtree.Bound.Y);
+
+                XElement dataElem = new XElement("data");
+                
+
+                _recursiveParseQuadtree(quadtree, dataElem);
+
+                quadtreeElem.Add(dataElem);
+                map.Add(quadtreeElem);
+            }
 
             m_tmxDocument.Add(map);
         }
 
-      
 
+        private void _recursiveParseQuadtree(Quadtree.Quadtree node, XElement groupElem)
+        {
+            XElement quadtreeNode = new XElement("node");
+            quadtreeNode.SetAttributeValue("id", Convert.ToString(node.Id, 10));
+            quadtreeNode.SetAttributeValue("parent", Convert.ToString(node.ParentId, 10));
+            quadtreeNode.SetAttributeValue("level", node.Level);
+
+            groupElem.Add(quadtreeNode);
+
+            if (!node.IsExternal())
+            {
+                _recursiveParseQuadtree(node.NE, groupElem);
+                _recursiveParseQuadtree(node.NW, groupElem);
+                _recursiveParseQuadtree(node.SE, groupElem);
+                _recursiveParseQuadtree(node.SW, groupElem);
+            }
+            else
+            {
+                if (node.Objects.Count != 0)
+                {
+                    XElement objElem = new XElement("objects");
+                    StringBuilder stringBuilder = new StringBuilder();
+                    foreach (Quadtree.QuadtreeObject obj in node.Objects)
+                    {
+                        stringBuilder.AppendFormat("{0},", obj.Target.Id);
+                    }
+                    stringBuilder.Remove(stringBuilder.Length -1, 1);
+                    objElem.SetAttributeValue("data", stringBuilder.ToString());
+                    quadtreeNode.Add(objElem);
+                }
+            }
+        }
 
 
         //public TileMap GetTileMap()

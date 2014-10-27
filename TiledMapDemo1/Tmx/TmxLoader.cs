@@ -135,6 +135,8 @@ namespace TiledMapDemo1
                     tileObject.Type = CommonUtil.SafeGetAttributeString(elem, "type");
                     tileObject.Position = new System.Drawing.Point(x_o, y_o);
                     tileObject.Size = new System.Drawing.Size(width_o, height_o);
+                    tileObject.Color = CommonUtil.SafeGetAttributeColor(elem, "color");
+                    
 
                     // Check polygon
                     XElement polygonElem = elem.Element("polygon");

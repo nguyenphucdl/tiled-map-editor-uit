@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TiledMapDemo1.Model;
+using TiledMapDemo1.Quadtree;
 
 namespace TiledMapDemo1
 {
@@ -216,6 +217,13 @@ namespace TiledMapDemo1
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
             workplaceModel.saveToolStripButton_Click(sender, e);
+        }
+
+        private void toolStripAddQuadtree_Click(object sender, EventArgs e)
+        {
+            QuadtreeWriter qwriter = new QuadtreeWriter(workplaceModel);
+            qwriter.Prepare();
+            qwriter.Save();
         }
 
 

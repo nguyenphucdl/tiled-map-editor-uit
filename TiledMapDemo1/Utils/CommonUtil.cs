@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,14 @@ namespace TiledMapDemo1.Utils
                 return "";
 
             return attr.Value;
+        }
+
+        public static Color SafeGetAttributeColor(XElement elem, string name)
+        {
+            XAttribute attr = elem.Attribute(name);
+            if (attr == null)
+                return Color.Pink;
+            return ColorTranslator.FromHtml(attr.Value.ToString());
         }
     }
 }

@@ -186,6 +186,17 @@ namespace TiledMapDemo1
             CurrentLayer.AddDrawingShape(drawRect);
         }
 
+        public void DrawRectange(int x, int y, int width, int height, LayerType type, Color color)
+        {
+            if (!isValidIndex(m_CurrentIndex))
+                return;
+            _stwichLayerType(type);
+
+            DrawingRectangle drawRect = new DrawingRectangle(x, y, width, height);
+            drawRect.DrawingPen = new Pen(color, 3);
+            CurrentLayer.AddDrawingShape(drawRect);
+        }
+
         public void DrawLine(int x1, int y1, int x2, int y2)
         {
             DrawLine(x1, y1, x2, y2, LayerType.TILEMAP);
@@ -199,6 +210,18 @@ namespace TiledMapDemo1
             _stwichLayerType(type);
 
             DrawingLine drawLine = new DrawingLine(new Point(x1, y1), new Point(x2, y2));
+            CurrentLayer.AddDrawingShape(drawLine);
+        }
+
+        public void DrawLine(int x1, int y1, int x2, int y2, LayerType type, Color color)
+        {
+            if (!isValidIndex(m_CurrentIndex))
+                return;
+
+            _stwichLayerType(type);
+
+            DrawingLine drawLine = new DrawingLine(new Point(x1, y1), new Point(x2, y2));
+            drawLine.DrawingPen = new Pen(color, 3);
             CurrentLayer.AddDrawingShape(drawLine);
         }
 

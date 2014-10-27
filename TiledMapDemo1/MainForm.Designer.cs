@@ -67,7 +67,11 @@
             this.lblZoom = new System.Windows.Forms.Label();
             this.lblGid = new System.Windows.Forms.Label();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripAddQuadtree = new System.Windows.Forms.ToolStripButton();
+            this.quadtreeLbl = new System.Windows.Forms.ToolStripLabel();
             this.tileSheetPanel = new TiledMapDemo1.BufferedPanel();
             this.tileSheetGraphic = new TiledMapDemo1.BufferedGraphic();
             this.bufferedGraphic1 = new TiledMapDemo1.BufferedGraphic();
@@ -77,6 +81,7 @@
             this.rectangleShape1 = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
             this.tileSheetPanel.SuspendLayout();
             this.mainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -215,7 +220,10 @@
             this.toolStripSeparator2,
             this.toolStripLabel2,
             this.toolRectangleDrawing,
-            this.toolLineDrawing});
+            this.toolLineDrawing,
+            this.toolStripSeparator3,
+            this.quadtreeLbl,
+            this.toolStripAddQuadtree});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1403, 25);
@@ -390,11 +398,22 @@
             // toolStrip2
             // 
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.toolStrip2.Location = new System.Drawing.Point(1377, 49);
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1});
+            this.toolStrip2.Location = new System.Drawing.Point(1379, 49);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(26, 689);
+            this.toolStrip2.Size = new System.Drawing.Size(24, 689);
             this.toolStrip2.TabIndex = 24;
             this.toolStrip2.Text = "toolStrip2";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(21, 20);
+            this.toolStripButton1.Text = "toolStripButton1";
             // 
             // propertyGrid
             // 
@@ -402,6 +421,29 @@
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.Size = new System.Drawing.Size(308, 184);
             this.propertyGrid.TabIndex = 25;
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripAddQuadtree
+            // 
+            this.toolStripAddQuadtree.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripAddQuadtree.Image = ((System.Drawing.Image)(resources.GetObject("toolStripAddQuadtree.Image")));
+            this.toolStripAddQuadtree.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripAddQuadtree.Name = "toolStripAddQuadtree";
+            this.toolStripAddQuadtree.Size = new System.Drawing.Size(23, 22);
+            this.toolStripAddQuadtree.Text = "toolStripAddQuadtree";
+            this.toolStripAddQuadtree.ToolTipText = "AddQuadTree";
+            this.toolStripAddQuadtree.Click += new System.EventHandler(this.toolStripAddQuadtree_Click);
+            // 
+            // quadtreeLbl
+            // 
+            this.quadtreeLbl.Margin = new System.Windows.Forms.Padding(10, 1, 5, 2);
+            this.quadtreeLbl.Name = "quadtreeLbl";
+            this.quadtreeLbl.Size = new System.Drawing.Size(59, 22);
+            this.quadtreeLbl.Text = "Quadtree:";
             // 
             // tileSheetPanel
             // 
@@ -511,6 +553,8 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
             this.tileSheetPanel.ResumeLayout(false);
             this.mainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -565,6 +609,10 @@
         private System.Windows.Forms.ToolStripButton toolNewLayer;
         private System.Windows.Forms.ToolStripButton toolRemoveLayer;
         private System.Windows.Forms.ToolStripButton toolLineDrawing;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton toolStripAddQuadtree;
+        private System.Windows.Forms.ToolStripLabel quadtreeLbl;
     }
 }
 

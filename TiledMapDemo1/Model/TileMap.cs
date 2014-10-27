@@ -14,6 +14,8 @@ namespace TiledMapDemo1.Model
 
         public IList<MapLayer> Layers { get; set; }
 
+        public Quadtree.Quadtree Quadtree { get; set; }  
+
         public string Path { get; set; }
 
 
@@ -49,6 +51,8 @@ namespace TiledMapDemo1.Model
             TileSets = tileSets;
 
             Layers = layers;
+
+            Quadtree = null;
         }
         public TileMap()
         {
@@ -62,6 +66,7 @@ namespace TiledMapDemo1.Model
             Size = null;
             TileSets = null;
             Layers = null;
+            Quadtree = null;
         }
     }
 }

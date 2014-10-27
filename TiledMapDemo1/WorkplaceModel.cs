@@ -21,6 +21,12 @@ namespace TiledMapDemo1
         #region Fields Renew
         private bool m_Initialized = false;
         private TileMap m_TileMap = null;
+
+        public TileMap TileMap
+        {
+            get { return m_TileMap; }
+            set { m_TileMap = value; }
+        }
         private string m_FilePath = null;
         private BufferedGraphic m_WorkPlaceGraphic = null;
         private BufferedGraphic m_TileSheetGraphic = null;
@@ -143,7 +149,7 @@ namespace TiledMapDemo1
             {
                 TreeNode lNode = new TreeNode(l.Name);
                 lNode.Name = l.Name;
-                lNode.Tag = "Layer";
+                lNode.Tag = l.Type.ToString();
                 mapLayerNode.Nodes.Add(lNode);
             }
             foreach (TileSet tileSet in m_TileSetDict.Values)
@@ -154,6 +160,7 @@ namespace TiledMapDemo1
                 mapTileSheetsNode.Nodes.Add(tNode);
             }
             #endregion
+
             m_LayersTreeView.Nodes.Clear();
             m_LayersTreeView.Nodes.Add(mapRootNode);
             m_LayersTreeView.ExpandAll();
@@ -212,6 +219,7 @@ namespace TiledMapDemo1
         private void LoadMapLayer()
         {
             int index = 10, drawId;
+            Color drawingColor, defaultColor = Color.Blue;
             m_WorkPlaceContext.Clear();
 
             foreach (MapLayer layer in m_MapLayerDict.Values)
@@ -272,8 +280,11 @@ namespace TiledMapDemo1
                         {
                             Point pos = tiobj.Position;
                             Size size = (tiobj.Size.Width != -1)? tiobj.Size: new Size(1, 1);
+                            drawingColor = defaultColor;
+                            if (tiobj.Color != Color.Pink) 
+                                drawingColor = tiobj.Color;
 
-                            m_WorkPlaceContext.DrawRectange(pos.X, pos.Y, size.Width, size.Height, LayerType.OBJECT);
+                            m_WorkPlaceContext.DrawRectange(pos.X, pos.Y, size.Width, size.Height, LayerType.OBJECT, drawingColor);
                         }
                         else if (tiobj.ObjectType == TileObjectType.POLYLINE)
                         {
@@ -284,14 +295,18 @@ namespace TiledMapDemo1
                             Point porigin = tiobj.Position;
                             Point pfrom = porigin, pto = new Point(-1, -1);
                             int xOffset, yOffset = 0;
-                            
+
+                            drawingColor = defaultColor;
+                            if (tiobj.Color != Color.Pink)
+                                drawingColor = tiobj.Color;
+
                             for (int i = 2; i < dataPoints.Length; i += 2)
                             {
                                 xOffset = int.Parse(dataPoints[i]);
                                 yOffset = int.Parse(dataPoints[i + 1]);
                                 
                                 pto = new Point(porigin.X + xOffset, porigin.Y + yOffset);
-                                m_WorkPlaceContext.DrawLine(pfrom.X, pfrom.Y, pto.X, pto.Y, LayerType.OBJECT);
+                                m_WorkPlaceContext.DrawLine(pfrom.X, pfrom.Y, pto.X, pto.Y, LayerType.OBJECT, drawingColor);
                                 pfrom = pto;
                             }
                         }
@@ -372,11 +387,15 @@ namespace TiledMapDemo1
             if (e.Node.Tag != null)
             {
                 String nodeTag = e.Node.Tag.ToString();
-                if (nodeTag == "Layer")
+                if (nodeTag == LayerType.OBJECT.ToString())
+                {
+                    m_PropertyGrid.SelectedObject = (TileObjectGroup)m_MapLayerDict[nodeText];
+                }
+                else if (nodeTag == LayerType.TILEMAP.ToString())
                 {
                     m_PropertyGrid.SelectedObject = m_MapLayerDict[nodeText];
                 }
-                else if(nodeTag == "TileSheet")
+                else if (nodeTag == "TileSheet")
                 {
                     m_PropertyGrid.SelectedObject = m_TileSetDict[nodeText];
                 }
