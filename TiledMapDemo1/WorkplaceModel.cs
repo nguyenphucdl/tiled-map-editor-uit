@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace TiledMapDemo1
         #region Fields Renew
         private bool m_Initialized = false;
         private TileMap m_TileMap = null;
-
+        private int m_currentGID = -1;
         public TileMap TileMap
         {
             get { return m_TileMap; }
@@ -452,9 +453,15 @@ namespace TiledMapDemo1
         #region Save
         public void saveToolStripButton_Click(object sender, EventArgs e)
         {
+            //Test
+            Bitmap bitmap = new Bitmap(m_WorkPlaceGraphic.Width, m_WorkPlaceGraphic.Height);
+            m_WorkPlaceGraphic.DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
+            bitmap.Save(m_TileMap.Path + @"\..\" + "preview.png");
+            
+
             TmxWriter mapWriter = new TmxWriter(m_TileMap);
             mapWriter.Read();
-            mapWriter.Save(@"map1-2\map1-2.tmx");
+            mapWriter.Save(m_TileMap.Path);
         }
         #endregion
 
@@ -524,7 +531,8 @@ namespace TiledMapDemo1
 
 
             owner.lblPosMove.Text = "Index [" + movePoint.X + "," + movePoint.Y + "], e[" + e.X + "," + e.Y + "]";
-            owner.lblGid.Text = "Gid [" + gid + "]";        
+            owner.lblGid.Text = "Gid [" + gid + "]";
+            m_currentGID = gid;
         }
 
         Point m_BeginDrawingPoint = new Point(-1, -1);
@@ -727,6 +735,21 @@ namespace TiledMapDemo1
             }
         }
 
+        public void itemPickTile_Click(object sender, EventArgs e)
+        {
+            int gid = m_currentGID;
+            _sheetChoose.Add(gid);
+        }
+
+        public void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                _sheetChoose.Clear();
+                m_WorkPlaceGraphic.Dirty = true;
+            }
+        }
+
         public void DrawWorkPlace(Graphics graphics)
         {
             if (!Initialized)
@@ -741,5 +764,6 @@ namespace TiledMapDemo1
             m_TileSetContext.Draw(graphics);
         }
         #endregion
+
     }
 }

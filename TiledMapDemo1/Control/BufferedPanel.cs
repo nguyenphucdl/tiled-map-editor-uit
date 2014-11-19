@@ -28,7 +28,14 @@ namespace TiledMapDemo1
         }
         private BufferedGraphicsContext m_BufferContext;
         private BufferedGraphics m_Buffer;
+
+        public Graphics Graphics
+        {
+            get { return m_Buffer.Graphics; }
+        }
         #endregion
+
+
 
         #region Buffer Configuration
         private void ApdaptSizeGraphicsBuffer()
@@ -96,7 +103,7 @@ namespace TiledMapDemo1
                 }
             }
 
-            base.Dispose(disposing);
+            //base.Dispose(disposing);
         }
         #endregion
 

@@ -20,6 +20,11 @@ namespace TiledMapDemo1
         private int m_OriginalHeight;
         private Graphics m_Graphics;
 
+        public Graphics Graphics
+        {
+            get { return m_Graphics; }
+        }
+
         public Size WorkplaceSize
         {
             get {

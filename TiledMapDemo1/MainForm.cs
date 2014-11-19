@@ -32,7 +32,25 @@ namespace TiledMapDemo1
         {
             InitializeComponent();
             RegisterWorkplaceEvents();
-            workplaceModel.LoadTileMap(tiledMapFile);
+            //workplaceModel.LoadTileMap(tiledMapFile);
+
+            ContextMenu cm = new ContextMenu();
+            MenuItem itemPickTile = new MenuItem("Pick Tile");
+            itemPickTile.Tag = "PickTile";
+            itemPickTile.Click += itemPickTile_Click;
+            cm.MenuItems.Add(itemPickTile);
+            this.ContextMenu = cm;
+
+            this.KeyPreview = true;
+        }
+
+        void itemPickTile_Click(object sender, EventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            if (item.Tag == "PickTile")
+            {
+                workplaceModel.itemPickTile_Click(sender, e);
+            }
         }
         private void RegisterWorkplaceEvents()
         {
@@ -224,6 +242,12 @@ namespace TiledMapDemo1
             QuadtreeWriter qwriter = new QuadtreeWriter(workplaceModel);
             qwriter.Prepare();
             qwriter.Save();
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+            workplaceModel.MainForm_KeyDown(sender, e);            
         }
 
 
