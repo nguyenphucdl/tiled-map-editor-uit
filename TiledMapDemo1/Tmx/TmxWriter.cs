@@ -121,7 +121,8 @@ namespace TiledMapDemo1
                             objElem.SetAttributeValue("type", tiobj.Type);
                         }
                         objElem.SetAttributeValue("x", tiobj.Position.X);
-                        objElem.SetAttributeValue("y", tiobj.Position.Y);
+                        objElem.SetAttributeValue("y", DemoUtils.GetInverseYScreenCoord(tiobj.Position.Y, m_tileMap.TileHeight * m_tileMap.Height));
+                        
                         if (tiobj.Size.Width != -1 && tiobj.Size.Height != -1)
                         {
                             objElem.SetAttributeValue("width", tiobj.Size.Width);

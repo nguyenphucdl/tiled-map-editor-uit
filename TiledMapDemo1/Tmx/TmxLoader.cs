@@ -72,10 +72,12 @@ namespace TiledMapDemo1
         private List<MapLayer> _parseMapLayers(XElement mapElement)
         {
             string layerName;
-            int layerWidth, layerHeight, gid, mapWidth, mapHeight;
+            int layerWidth, layerHeight, gid, mapWidth, mapHeight, tileWidth, tileHeight;
 
             mapWidth = int.Parse(mapElement.Attribute("width").Value);
             mapHeight = int.Parse(mapElement.Attribute("height").Value);
+            tileWidth = int.Parse(mapElement.Attribute("tilewidth").Value);
+            tileHeight = int.Parse(mapElement.Attribute("tileheight").Value);
 
             List<MapLayer> layerList = new List<MapLayer>();
 
@@ -126,6 +128,7 @@ namespace TiledMapDemo1
 
                     x_o = CommonUtil.SafeGetAttributeInt(elem, "x");
                     y_o = CommonUtil.SafeGetAttributeInt(elem, "y");
+                    y_o = DemoUtils.GetInverseYScreenCoord(y_o, tileHeight * mapHeight);
                     width_o = CommonUtil.SafeGetAttributeInt(elem, "width");
                     height_o = CommonUtil.SafeGetAttributeInt(elem, "height");
 

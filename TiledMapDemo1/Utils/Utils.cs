@@ -88,7 +88,11 @@ namespace TiledMapDemo1
 
             return result;
         }
-        
+
+        public static int GetInverseYScreenCoord(int y, int mapHeight)
+        {
+            return mapHeight - y;
+        }
 
         //public static Bitmap ConvertToGrayScale(Bitmap original)
         //{
