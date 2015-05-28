@@ -20,7 +20,13 @@ namespace TiledMapDemo1
         protected bool m_serializable = true;
         protected LayerType m_layerType = LayerType.NONE;
         protected LayerContext m_container;
-        protected List<DrawingShape> m_shapes = new List<DrawingShape>();
+        private List<DrawingShape> m_shapes = new List<DrawingShape>();
+
+        public List<DrawingShape> Shapes
+        {
+            get { return m_shapes; }
+            set { m_shapes = value; }
+        }
         #endregion
 
         #region Getter & Setter

@@ -87,7 +87,7 @@ namespace TiledMapDemo1
 
         public void RemoveRegion(Rectangle region)
         {
-            DrawingShape shape = m_shapes.Where(e => e.GetBound() == region).FirstOrDefault();
+            DrawingShape shape = Shapes.Where(e => e.GetBound() == region).FirstOrDefault();
             if(shape != null)
                 RemoveDrawingShape(shape);
         }

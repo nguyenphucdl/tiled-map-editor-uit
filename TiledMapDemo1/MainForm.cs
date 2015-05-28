@@ -206,8 +206,7 @@ namespace TiledMapDemo1
 
         private void toolRectangleDrawing_Click(object sender, EventArgs e)
         {
-            workplaceModel.Drawing = true;
-            workplaceModel.DrawingType = DrawingType.RECTANGLE;
+            workplaceModel.toolRectangleDrawing_Click(sender,e);
         }
 
         private void toolLineDrawing_Click(object sender, EventArgs e)
@@ -250,10 +249,10 @@ namespace TiledMapDemo1
             workplaceModel.MainForm_KeyDown(sender, e);            
         }
 
-
-
-
-
+        private void toolStripSelectObject_Click(object sender, System.EventArgs e)
+        {
+            workplaceModel.toolStripSelectObject_Click(sender, e);
+        }
 
 
 

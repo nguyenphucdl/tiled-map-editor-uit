@@ -10,6 +10,14 @@ using System.Threading.Tasks;
 
 namespace TiledMapDemo1
 {
+    public static class EnumUtil
+    {
+        public static IEnumerable<T> GetValues<T>()
+        {
+            return Enum.GetValues(typeof(T)).Cast<T>();
+        }
+    }
+
     public static class DemoUtils
     {
         private static Image m_cacheImage = null;

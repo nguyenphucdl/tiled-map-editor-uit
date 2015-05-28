@@ -35,6 +35,7 @@ namespace TiledMapDemo1
         {
             if (!m_isValid)
                 return false;
+            //_parse();
             m_tmxDocument.Save(m_tmxSaveFilePath);
             return true;
         }
@@ -115,6 +116,7 @@ namespace TiledMapDemo1
                     foreach (TileObject tiobj in objectgroup.Objects)
                     {
                         XElement objElem = new XElement("object");
+                        objElem.SetAttributeValue("id", tiobj.Id);
                         objElem.SetAttributeValue("name", tiobj.Name);
                         if (tiobj.Type != "")
                         {
@@ -122,6 +124,7 @@ namespace TiledMapDemo1
                         }
                         objElem.SetAttributeValue("x", tiobj.Position.X);
                         objElem.SetAttributeValue("y", DemoUtils.GetInverseYScreenCoord(tiobj.Position.Y, m_tileMap.TileHeight * m_tileMap.Height));
+                        //objElem.SetAttributeValue("y", tiobj.Position.Y);
                         
                         if (tiobj.Size.Width != -1 && tiobj.Size.Height != -1)
                         {

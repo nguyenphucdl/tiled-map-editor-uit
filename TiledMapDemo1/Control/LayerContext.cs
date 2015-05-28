@@ -12,6 +12,12 @@ namespace TiledMapDemo1
     {
         #region Fields
         private List<Layer> m_Layers;
+
+        public List<Layer> Layers
+        {
+            get { return m_Layers; }
+            set { m_Layers = value; }
+        }
         private int m_CurrentIndex;
         private Layer m_CurrentLayer;
        

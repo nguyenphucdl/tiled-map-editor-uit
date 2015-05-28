@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TiledMapDemo1.Contants;
 using TiledMapDemo1.Model;
 using TiledMapDemo1.Utils;
 
@@ -134,8 +135,14 @@ namespace TiledMapDemo1
 
 
                     TileObject tileObject = new TileObject();
+                    tileObject.Id = CommonUtil.SafeGetAttributeInt(elem, "id");
+                    if (tileObject.Id == -1)
+                        tileObject.Id = IDGenerator.GetNextID();
+
                     tileObject.Name = CommonUtil.SafeGetAttributeString(elem, "name");
                     tileObject.Type = CommonUtil.SafeGetAttributeString(elem, "type");
+                    if (tileObject.Type.Equals(""))
+                        tileObject.Type = ((int)ObjectTypes.STATIC_OBJECT).ToString();
                     tileObject.Position = new System.Drawing.Point(x_o, y_o);
                     tileObject.Size = new System.Drawing.Size(width_o, height_o);
                     tileObject.Color = CommonUtil.SafeGetAttributeColor(elem, "color");

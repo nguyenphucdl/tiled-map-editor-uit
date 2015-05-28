@@ -23,6 +23,8 @@ namespace TiledMapDemo1
         private bool m_Initialized = false;
         private TileMap m_TileMap = null;
         private int m_currentGID = -1;
+        private bool m_selectObjectMode = false;
+        private ObjectProperty m_newObjectProperty = null;
         public TileMap TileMap
         {
             get { return m_TileMap; }
@@ -390,7 +392,7 @@ namespace TiledMapDemo1
                 String nodeTag = e.Node.Tag.ToString();
                 if (nodeTag == LayerType.OBJECT.ToString())
                 {
-                    m_PropertyGrid.SelectedObject = (TileObjectGroup)m_MapLayerDict[nodeText];
+                    m_PropertyGrid.SelectedObject = m_MapLayerDict[nodeText];
                 }
                 else if (nodeTag == LayerType.TILEMAP.ToString())
                 {
@@ -446,6 +448,11 @@ namespace TiledMapDemo1
                 m_MapLayerDict.Add(newLayer.Name, newLayer);
                 m_WorkPlaceContext.AddLayer(newLayer.Name, 10, LayerType.OBJECT);
                 LoadTreeView();
+
+
+               TileObjectGroup newTileObjectGr = new TileObjectGroup("Object Layer", m_TileMap.Width, m_TileMap.Height);
+               newTileObjectGr.Type = LayerType.OBJECT;
+               m_TileMap.Layers.Add(newTileObjectGr);
             }
         }
         #endregion
@@ -472,9 +479,18 @@ namespace TiledMapDemo1
 
             int cellSize = (int)(CurrentTileSet.TileWidth * m_WorkPlaceGraphic.Zoom);
             Point movePoint = new Point(e.X / cellSize, e.Y / cellSize);
-
+            
             TileMapLayer tileMapLayer = (TileMapLayer)m_TileMap.Layers[0];
-            int gid = tileMapLayer.TileIds[movePoint.X, movePoint.Y];
+            int gid = 0;
+            try
+            {
+                gid = tileMapLayer.TileIds[movePoint.X, movePoint.Y];
+            }
+            catch(IndexOutOfRangeException pe)
+            {
+                return;
+            }
+            
 
 
             if(!Drawing)
@@ -558,7 +574,83 @@ namespace TiledMapDemo1
                 m_WorkPlaceGraphic.Dirty = true;
             }
 
+            if(m_selectObjectMode)
+            {
+                Rectangle selectedBound = new Rectangle();
+                List<DrawingShape> listRemove = new List<DrawingShape>();
+                foreach(Layer layer in m_WorkPlaceContext.Layers)
+                {
+                    if(layer.Type == LayerType.OBJECT)
+                    {
+                        DrawingRectangle rectDrawing = null;
+                        foreach(DrawingShape shape in layer.Shapes)
+                        {
+                            if(shape is DrawingRectangle)
+                            {
+                                rectDrawing = (DrawingRectangle)shape;
+
+                                Rectangle rect = rectDrawing.GetBound();
+
+                                Point test = e.Location;
+                                float zoom = m_WorkPlaceGraphic.Zoom;
+                                test.X = (int)(test.X / zoom);
+                                test.Y = (int)(test.Y / zoom);
+
+                                if(rect.Contains(test))
+                                {
+                                    selectedBound = rect;
+                                    SearchTileObjectWithBound(selectedBound);
+                                    if (m_newObjectProperty != null && m_newObjectProperty.RemoveState)
+                                    {
+                                        listRemove.Add(shape);
+                                    }
+                                }
+                            }
+                        }
+                        if (listRemove.Count != 0)
+                        {
+                            foreach(DrawingShape deleteShape in listRemove)
+                            {
+                                layer.Shapes.Remove(deleteShape);
+                            }
+                            listRemove.Clear();
+                            m_WorkPlaceGraphic.Dirty = true;
+                        }
+                    }
+                }
+
+                
+            }
             
+        }
+
+        private void SearchTileObjectWithBound(Rectangle boundFind)
+        {
+            TileObject deleteObj = null;
+            foreach (MapLayer l in m_TileMap.Layers)
+            {
+                if (l.Type == LayerType.OBJECT)
+                {
+                    TileObjectGroup tileObjGr = (TileObjectGroup)l;
+                    foreach (TileObject obj in tileObjGr.Objects)
+                    {
+                        Rectangle objBound = obj.GetBound();
+                        if (objBound == boundFind)
+                        {
+                            m_newObjectProperty = new ObjectProperty();
+                            m_newObjectProperty.TileObject = obj;
+                            if (m_newObjectProperty.ShowDialog() == DialogResult.Abort)
+                            {
+                                deleteObj = obj;
+                            }
+                        }
+                    }
+                    if(m_newObjectProperty != null && m_newObjectProperty.RemoveState)
+                    {
+                        tileObjGr.Objects.Remove(deleteObj);
+                    }
+                }
+            }
         }
 
         private Point MapIndexOfPoint(Point e)
@@ -639,8 +731,13 @@ namespace TiledMapDemo1
 
                     m_WorkPlaceContext.DrawRectange(location.X, location.Y, (int)(deltaX), (int)(deltaY), LayerType.OBJECT);
 
-                    tiObj = new TileObject("", location, new Size((int)(deltaX), (int)(deltaY)));
-                    
+                    //tiObj = new TileObject("", location, new Size((int)(deltaX), (int)(deltaY)));
+                    if(m_newObjectProperty != null)
+                    {
+                        tiObj = m_newObjectProperty.TileObject;
+                        tiObj.Position = location;
+                        tiObj.Size = new Size((int)(deltaX), (int)(deltaY));
+                    }
                     
                 }
                 else if (DrawingType == DrawingType.LINE)
@@ -664,6 +761,7 @@ namespace TiledMapDemo1
                     if (l.Type == LayerType.OBJECT)
                     {
                         TileObjectGroup tileObjGr = (TileObjectGroup)l;
+                        tiObj.Id = tileObjGr.Objects.Count + 1;
                         tileObjGr.AddObject(tiObj);
                     }
                 }
@@ -674,6 +772,10 @@ namespace TiledMapDemo1
             }
         }
 
+        public void toolStripSelectObject_Click(object sender, EventArgs e)
+        {
+            m_selectObjectMode = true;
+        }
 
         public void tileSheetGraphic_MouseMove(MainForm owner, MouseEventArgs e)
         {
@@ -747,6 +849,8 @@ namespace TiledMapDemo1
             {
                 _sheetChoose.Clear();
                 m_WorkPlaceGraphic.Dirty = true;
+                m_newObjectProperty = null;
+                m_selectObjectMode = false;
             }
         }
 
@@ -765,5 +869,19 @@ namespace TiledMapDemo1
         }
         #endregion
 
+
+        public void toolRectangleDrawing_Click(object sender, EventArgs e)
+        {
+            Drawing = true;
+            DrawingType = DrawingType.RECTANGLE;
+
+            m_newObjectProperty = new ObjectProperty();
+            TileObject newTileObj = new TileObject();
+            m_newObjectProperty.TileObject = newTileObj;
+            if (m_newObjectProperty.ShowDialog() == DialogResult.Cancel)
+            {
+                m_newObjectProperty = null;
+            }
+        }
     }
 }

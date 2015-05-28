@@ -79,6 +79,8 @@
             this.workplaceGraphic = new TiledMapDemo1.BufferedGraphic();
             this.shapeContainer2 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.rectangleShape1 = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSelectObject = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -223,7 +225,9 @@
             this.toolLineDrawing,
             this.toolStripSeparator3,
             this.quadtreeLbl,
-            this.toolStripAddQuadtree});
+            this.toolStripAddQuadtree,
+            this.toolStripSeparator4,
+            this.toolStripSelectObject});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1403, 25);
@@ -524,6 +528,21 @@
             this.rectangleShape1.Name = "rectangleShape1";
             this.rectangleShape1.Size = new System.Drawing.Size(21, 13);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSelectObject
+            // 
+            this.toolStripSelectObject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSelectObject.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSelectObject.Image")));
+            this.toolStripSelectObject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSelectObject.Name = "toolStripSelectObject";
+            this.toolStripSelectObject.Size = new System.Drawing.Size(23, 22);
+            this.toolStripSelectObject.Text = "Select Object";
+            this.toolStripSelectObject.Click += toolStripSelectObject_Click;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -562,6 +581,9 @@
             this.PerformLayout();
 
         }
+
+
+
 
         #endregion
 
@@ -614,6 +636,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton toolStripAddQuadtree;
         private System.Windows.Forms.ToolStripLabel quadtreeLbl;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton toolStripSelectObject;
     }
 }
 

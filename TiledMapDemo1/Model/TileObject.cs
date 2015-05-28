@@ -124,7 +124,7 @@ namespace TiledMapDemo1.Model
 
         public TileObject()
         {
-            m_id = IDGenerator.GetNextID();
+            
             m_name = "";
             m_type = "";
             m_position = new Point(0, 0);
