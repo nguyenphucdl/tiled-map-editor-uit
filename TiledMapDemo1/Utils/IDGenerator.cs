@@ -73,10 +73,15 @@ namespace TiledMapDemo1.Utils
             //}
             //child.Id = codeQuadrant;
 
+
             child.Id = m_codeStart++;
             if (parent != null)
             {
                 child.ParentId = parent.Id;
+            }
+            else
+            {
+                child.ParentId = -1;
             }
         }
     }

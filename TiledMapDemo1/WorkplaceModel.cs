@@ -734,7 +734,8 @@ namespace TiledMapDemo1
                     //tiObj = new TileObject("", location, new Size((int)(deltaX), (int)(deltaY)));
                     if(m_newObjectProperty != null)
                     {
-                        tiObj = m_newObjectProperty.TileObject;
+                        tiObj.Type = m_newObjectProperty.TileObject.Type;
+                        tiObj.Name = m_newObjectProperty.TileObject.Name;
                         tiObj.Position = location;
                         tiObj.Size = new Size((int)(deltaX), (int)(deltaY));
                     }

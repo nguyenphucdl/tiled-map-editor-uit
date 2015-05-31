@@ -191,8 +191,8 @@ namespace TiledMapDemo1.Quadtree
         {
             NE.Insert(obj);
             NW.Insert(obj);
-            SE.Insert(obj);
             SW.Insert(obj);
+            SE.Insert(obj);
         }
 
         private bool _IsNeedQuadrant()
