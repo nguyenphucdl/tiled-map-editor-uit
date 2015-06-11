@@ -417,6 +417,7 @@
             this.toolStripSelectObject.Name = "toolStripSelectObject";
             this.toolStripSelectObject.Size = new System.Drawing.Size(24, 24);
             this.toolStripSelectObject.Text = "Select Object";
+            this.toolStripSelectObject.Click += new System.EventHandler(this.toolStripSelectObject_Click);
             // 
             // toolStripSeparator6
             // 
