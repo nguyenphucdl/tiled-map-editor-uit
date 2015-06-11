@@ -26,6 +26,7 @@ namespace TiledMapDemo1.Model
         public int Height { get; set; }
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
+        public int ViewportType { get; set; }
         /**/
 
         public TileMap(TileMapSize size, IList<TileSet> tileSets, IList<MapLayer> layers, string path)
@@ -53,6 +54,8 @@ namespace TiledMapDemo1.Model
             Layers = layers;
 
             Quadtree = null;
+
+            ViewportType = 0;
         }
         public TileMap()
         {
@@ -67,6 +70,7 @@ namespace TiledMapDemo1.Model
             TileSets = null;
             Layers = null;
             Quadtree = null;
+            ViewportType = 0;
         }
     }
 }

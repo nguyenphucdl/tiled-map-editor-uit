@@ -52,6 +52,7 @@ namespace TiledMapDemo1
             map.SetAttributeValue("width", m_tileMap.Width);
             map.SetAttributeValue("height", m_tileMap.Height);
             map.SetAttributeValue("orientation", m_tileMap.Orientation);
+            map.SetAttributeValue("viewporttype", m_tileMap.ViewportType);
             
             foreach (TileSet ts in m_tileMap.TileSets)
             {

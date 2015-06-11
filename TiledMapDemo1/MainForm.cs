@@ -254,6 +254,11 @@ namespace TiledMapDemo1
             workplaceModel.toolStripSelectObject_Click(sender, e);
         }
 
+        private void btnSetViewport_Click(object sender, EventArgs e)
+        {
+            workplaceModel.btnSetViewport_Click(sender, e);
+        }
+
 
 
 

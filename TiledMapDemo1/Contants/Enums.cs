@@ -12,4 +12,12 @@ namespace TiledMapDemo1.Contants
         RANGE_OF_MOMENT,
         SPAWNLOCATION
     }
+
+    enum ViewportTypes
+    {
+        TOP_LEFT,
+        TOP_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_RIGHT
+    }
 }

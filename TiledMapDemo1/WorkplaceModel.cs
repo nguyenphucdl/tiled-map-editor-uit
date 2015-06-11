@@ -884,5 +884,16 @@ namespace TiledMapDemo1
                 m_newObjectProperty = null;
             }
         }
+
+        public void btnSetViewport_Click(object sender, EventArgs e)
+        {
+            int viewportType = 0;
+            ViewportForm viewportForm = new ViewportForm();
+            if(viewportForm.ShowDialog() == DialogResult.OK)
+            {
+                viewportType = viewportForm.ViewportType;
+                m_TileMap.ViewportType = viewportType;
+            }
+        }
     }
 }
