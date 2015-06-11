@@ -68,6 +68,8 @@
             this.toolStripAddQuadtree = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSelectObject = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnSetViewport = new System.Windows.Forms.ToolStripButton();
             this.lblPosMove = new System.Windows.Forms.Label();
             this.lblZoom = new System.Windows.Forms.Label();
             this.lblGid = new System.Windows.Forms.Label();
@@ -81,8 +83,6 @@
             this.workplaceGraphic = new TiledMapDemo1.BufferedGraphic();
             this.shapeContainer2 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.rectangleShape1 = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnSetViewport = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -100,7 +100,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1871, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(1355, 25);
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -186,9 +186,9 @@
             // treeViewMapLayer
             // 
             this.treeViewMapLayer.Location = new System.Drawing.Point(15, 122);
-            this.treeViewMapLayer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeViewMapLayer.Margin = new System.Windows.Forms.Padding(4);
             this.treeViewMapLayer.Name = "treeViewMapLayer";
-            this.treeViewMapLayer.Size = new System.Drawing.Size(415, 179);
+            this.treeViewMapLayer.Size = new System.Drawing.Size(285, 144);
             this.treeViewMapLayer.TabIndex = 14;
             this.treeViewMapLayer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewMapExplorer_AfterSelect);
             // 
@@ -205,7 +205,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(13, 6, 0, 6);
-            this.label1.Size = new System.Drawing.Size(416, 28);
+            this.label1.Size = new System.Drawing.Size(286, 25);
             this.label1.TabIndex = 15;
             this.label1.Text = "Layers";
             // 
@@ -239,7 +239,7 @@
             this.btnSetViewport});
             this.toolStrip1.Location = new System.Drawing.Point(0, 25);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1871, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1355, 27);
             this.toolStrip1.TabIndex = 16;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -418,149 +418,6 @@
             this.toolStripSelectObject.Size = new System.Drawing.Size(24, 24);
             this.toolStripSelectObject.Text = "Select Object";
             // 
-            // lblPosMove
-            // 
-            this.lblPosMove.AutoSize = true;
-            this.lblPosMove.Location = new System.Drawing.Point(447, 881);
-            this.lblPosMove.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblPosMove.Name = "lblPosMove";
-            this.lblPosMove.Size = new System.Drawing.Size(32, 17);
-            this.lblPosMove.TabIndex = 19;
-            this.lblPosMove.Text = "Pos";
-            // 
-            // lblZoom
-            // 
-            this.lblZoom.AutoSize = true;
-            this.lblZoom.Location = new System.Drawing.Point(783, 881);
-            this.lblZoom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblZoom.Name = "lblZoom";
-            this.lblZoom.Size = new System.Drawing.Size(44, 17);
-            this.lblZoom.TabIndex = 20;
-            this.lblZoom.Text = "Zoom";
-            // 
-            // lblGid
-            // 
-            this.lblGid.AutoSize = true;
-            this.lblGid.Location = new System.Drawing.Point(16, 881);
-            this.lblGid.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblGid.Name = "lblGid";
-            this.lblGid.Size = new System.Drawing.Size(30, 17);
-            this.lblGid.TabIndex = 22;
-            this.lblGid.Text = "Gid";
-            // 
-            // toolStrip2
-            // 
-            this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
-            this.toolStrip2.Location = new System.Drawing.Point(1846, 52);
-            this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(25, 856);
-            this.toolStrip2.TabIndex = 24;
-            this.toolStrip2.Text = "toolStrip2";
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(22, 24);
-            this.toolStripButton1.Text = "toolStripButton1";
-            // 
-            // propertyGrid
-            // 
-            this.propertyGrid.Location = new System.Drawing.Point(16, 330);
-            this.propertyGrid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(411, 226);
-            this.propertyGrid.TabIndex = 25;
-            // 
-            // tileSheetPanel
-            // 
-            this.tileSheetPanel.AutoScroll = true;
-            this.tileSheetPanel.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.tileSheetPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tileSheetPanel.CausesValidation = false;
-            this.tileSheetPanel.Controls.Add(this.tileSheetGraphic);
-            this.tileSheetPanel.Controls.Add(this.bufferedGraphic1);
-            this.tileSheetPanel.Dirty = false;
-            this.tileSheetPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.tileSheetPanel.Location = new System.Drawing.Point(19, 585);
-            this.tileSheetPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tileSheetPanel.Name = "tileSheetPanel";
-            this.tileSheetPanel.Size = new System.Drawing.Size(411, 281);
-            this.tileSheetPanel.TabIndex = 21;
-            // 
-            // tileSheetGraphic
-            // 
-            this.tileSheetGraphic.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.tileSheetGraphic.Dirty = false;
-            this.tileSheetGraphic.Location = new System.Drawing.Point(17, 18);
-            this.tileSheetGraphic.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.tileSheetGraphic.Name = "tileSheetGraphic";
-            this.tileSheetGraphic.Size = new System.Drawing.Size(352, 257);
-            this.tileSheetGraphic.TabIndex = 21;
-            this.tileSheetGraphic.WorkplaceSize = new System.Drawing.Size(352, 257);
-            this.tileSheetGraphic.Zoom = 1.25F;
-            this.tileSheetGraphic.MouseLeave += new System.EventHandler(this.tileSheetGraphic_MouseLeave);
-            // 
-            // bufferedGraphic1
-            // 
-            this.bufferedGraphic1.Dirty = true;
-            this.bufferedGraphic1.Location = new System.Drawing.Point(0, 0);
-            this.bufferedGraphic1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.bufferedGraphic1.Name = "bufferedGraphic1";
-            this.bufferedGraphic1.Size = new System.Drawing.Size(0, 0);
-            this.bufferedGraphic1.TabIndex = 20;
-            this.bufferedGraphic1.WorkplaceSize = new System.Drawing.Size(0, 0);
-            this.bufferedGraphic1.Zoom = 1F;
-            // 
-            // mainPanel
-            // 
-            this.mainPanel.AutoScroll = true;
-            this.mainPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.mainPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.mainPanel.CausesValidation = false;
-            this.mainPanel.Controls.Add(this.workplaceGraphic);
-            this.mainPanel.Controls.Add(this.shapeContainer2);
-            this.mainPanel.Dirty = false;
-            this.mainPanel.Location = new System.Drawing.Point(468, 90);
-            this.mainPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(1305, 776);
-            this.mainPanel.TabIndex = 17;
-            // 
-            // workplaceGraphic
-            // 
-            this.workplaceGraphic.Dirty = true;
-            this.workplaceGraphic.Location = new System.Drawing.Point(0, 0);
-            this.workplaceGraphic.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.workplaceGraphic.Name = "workplaceGraphic";
-            this.workplaceGraphic.Size = new System.Drawing.Size(0, 0);
-            this.workplaceGraphic.TabIndex = 20;
-            this.workplaceGraphic.WorkplaceSize = new System.Drawing.Size(0, 0);
-            this.workplaceGraphic.Zoom = 1F;
-            this.workplaceGraphic.MouseLeave += new System.EventHandler(this.workplaceGraphic_MouseLeave);
-            // 
-            // shapeContainer2
-            // 
-            this.shapeContainer2.Location = new System.Drawing.Point(0, 0);
-            this.shapeContainer2.Margin = new System.Windows.Forms.Padding(0);
-            this.shapeContainer2.Name = "shapeContainer2";
-            this.shapeContainer2.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
-            this.rectangleShape1});
-            this.shapeContainer2.Size = new System.Drawing.Size(1303, 774);
-            this.shapeContainer2.TabIndex = 21;
-            this.shapeContainer2.TabStop = false;
-            // 
-            // rectangleShape1
-            // 
-            this.rectangleShape1.Location = new System.Drawing.Point(1009, 85);
-            this.rectangleShape1.Name = "rectangleShape1";
-            this.rectangleShape1.Size = new System.Drawing.Size(21, 13);
-            // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
@@ -576,12 +433,157 @@
             this.btnSetViewport.Text = "Set Viewport";
             this.btnSetViewport.Click += new System.EventHandler(this.btnSetViewport_Click);
             // 
+            // lblPosMove
+            // 
+            this.lblPosMove.AutoSize = true;
+            this.lblPosMove.Location = new System.Drawing.Point(447, 737);
+            this.lblPosMove.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblPosMove.Name = "lblPosMove";
+            this.lblPosMove.Size = new System.Drawing.Size(32, 17);
+            this.lblPosMove.TabIndex = 19;
+            this.lblPosMove.Text = "Pos";
+            this.lblPosMove.Click += new System.EventHandler(this.lblPosMove_Click);
+            // 
+            // lblZoom
+            // 
+            this.lblZoom.AutoSize = true;
+            this.lblZoom.Location = new System.Drawing.Point(690, 737);
+            this.lblZoom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblZoom.Name = "lblZoom";
+            this.lblZoom.Size = new System.Drawing.Size(44, 17);
+            this.lblZoom.TabIndex = 20;
+            this.lblZoom.Text = "Zoom";
+            this.lblZoom.Click += new System.EventHandler(this.lblZoom_Click);
+            // 
+            // lblGid
+            // 
+            this.lblGid.AutoSize = true;
+            this.lblGid.Location = new System.Drawing.Point(15, 737);
+            this.lblGid.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblGid.Name = "lblGid";
+            this.lblGid.Size = new System.Drawing.Size(30, 17);
+            this.lblGid.TabIndex = 22;
+            this.lblGid.Text = "Gid";
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1});
+            this.toolStrip2.Location = new System.Drawing.Point(1330, 52);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(25, 721);
+            this.toolStrip2.TabIndex = 24;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(22, 24);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // propertyGrid
+            // 
+            this.propertyGrid.Location = new System.Drawing.Point(16, 292);
+            this.propertyGrid.Margin = new System.Windows.Forms.Padding(4);
+            this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.Size = new System.Drawing.Size(284, 182);
+            this.propertyGrid.TabIndex = 25;
+            // 
+            // tileSheetPanel
+            // 
+            this.tileSheetPanel.AutoScroll = true;
+            this.tileSheetPanel.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.tileSheetPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tileSheetPanel.CausesValidation = false;
+            this.tileSheetPanel.Controls.Add(this.tileSheetGraphic);
+            this.tileSheetPanel.Controls.Add(this.bufferedGraphic1);
+            this.tileSheetPanel.Dirty = false;
+            this.tileSheetPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.tileSheetPanel.Location = new System.Drawing.Point(18, 502);
+            this.tileSheetPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.tileSheetPanel.Name = "tileSheetPanel";
+            this.tileSheetPanel.Size = new System.Drawing.Size(281, 189);
+            this.tileSheetPanel.TabIndex = 21;
+            // 
+            // tileSheetGraphic
+            // 
+            this.tileSheetGraphic.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.tileSheetGraphic.Dirty = false;
+            this.tileSheetGraphic.Location = new System.Drawing.Point(12, 13);
+            this.tileSheetGraphic.Margin = new System.Windows.Forms.Padding(5);
+            this.tileSheetGraphic.Name = "tileSheetGraphic";
+            this.tileSheetGraphic.Size = new System.Drawing.Size(251, 257);
+            this.tileSheetGraphic.TabIndex = 21;
+            this.tileSheetGraphic.WorkplaceSize = new System.Drawing.Size(251, 257);
+            this.tileSheetGraphic.Zoom = 1.25F;
+            this.tileSheetGraphic.MouseLeave += new System.EventHandler(this.tileSheetGraphic_MouseLeave);
+            // 
+            // bufferedGraphic1
+            // 
+            this.bufferedGraphic1.Dirty = true;
+            this.bufferedGraphic1.Location = new System.Drawing.Point(0, 0);
+            this.bufferedGraphic1.Margin = new System.Windows.Forms.Padding(5);
+            this.bufferedGraphic1.Name = "bufferedGraphic1";
+            this.bufferedGraphic1.Size = new System.Drawing.Size(0, 0);
+            this.bufferedGraphic1.TabIndex = 20;
+            this.bufferedGraphic1.WorkplaceSize = new System.Drawing.Size(0, 0);
+            this.bufferedGraphic1.Zoom = 1F;
+            // 
+            // mainPanel
+            // 
+            this.mainPanel.AutoScroll = true;
+            this.mainPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.mainPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mainPanel.CausesValidation = false;
+            this.mainPanel.Controls.Add(this.workplaceGraphic);
+            this.mainPanel.Controls.Add(this.shapeContainer2);
+            this.mainPanel.Dirty = false;
+            this.mainPanel.Location = new System.Drawing.Point(326, 90);
+            this.mainPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.mainPanel.Name = "mainPanel";
+            this.mainPanel.Size = new System.Drawing.Size(970, 601);
+            this.mainPanel.TabIndex = 17;
+            // 
+            // workplaceGraphic
+            // 
+            this.workplaceGraphic.Dirty = true;
+            this.workplaceGraphic.Location = new System.Drawing.Point(0, 0);
+            this.workplaceGraphic.Margin = new System.Windows.Forms.Padding(5);
+            this.workplaceGraphic.Name = "workplaceGraphic";
+            this.workplaceGraphic.Size = new System.Drawing.Size(0, 0);
+            this.workplaceGraphic.TabIndex = 20;
+            this.workplaceGraphic.WorkplaceSize = new System.Drawing.Size(0, 0);
+            this.workplaceGraphic.Zoom = 1F;
+            this.workplaceGraphic.MouseLeave += new System.EventHandler(this.workplaceGraphic_MouseLeave);
+            // 
+            // shapeContainer2
+            // 
+            this.shapeContainer2.Location = new System.Drawing.Point(0, 0);
+            this.shapeContainer2.Margin = new System.Windows.Forms.Padding(0);
+            this.shapeContainer2.Name = "shapeContainer2";
+            this.shapeContainer2.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.rectangleShape1});
+            this.shapeContainer2.Size = new System.Drawing.Size(844, 465);
+            this.shapeContainer2.TabIndex = 21;
+            this.shapeContainer2.TabStop = false;
+            // 
+            // rectangleShape1
+            // 
+            this.rectangleShape1.Location = new System.Drawing.Point(1009, 85);
+            this.rectangleShape1.Name = "rectangleShape1";
+            this.rectangleShape1.Size = new System.Drawing.Size(21, 13);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(1871, 908);
+            this.ClientSize = new System.Drawing.Size(1355, 773);
             this.Controls.Add(this.propertyGrid);
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.lblGid);
@@ -595,12 +597,13 @@
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tiled Map";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             this.menuStrip1.ResumeLayout(false);

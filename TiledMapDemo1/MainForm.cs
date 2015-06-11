@@ -259,6 +259,21 @@ namespace TiledMapDemo1
             workplaceModel.btnSetViewport_Click(sender, e);
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblZoom_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblPosMove_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
 
 
