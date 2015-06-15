@@ -709,6 +709,10 @@ namespace TiledMapDemo1
                 {
                     int deltaX = toPoint.X - beginPoint.X;
                     int deltaY = toPoint.Y - beginPoint.Y;
+
+                    if (deltaX <= 0 || deltaY <= 0)
+                        return;
+
                     Point location = new Point();
                     if (deltaX > 0 && deltaY > 0)
                     {
@@ -736,6 +740,7 @@ namespace TiledMapDemo1
                     {
                         tiObj.Type = m_newObjectProperty.TileObject.Type;
                         tiObj.Name = m_newObjectProperty.TileObject.Name;
+                        tiObj.ObjectData = m_newObjectProperty.TileObject.ObjectData;
                         tiObj.Position = location;
                         tiObj.Size = new Size((int)(deltaX), (int)(deltaY));
                     }
@@ -762,7 +767,14 @@ namespace TiledMapDemo1
                     if (l.Type == LayerType.OBJECT)
                     {
                         TileObjectGroup tileObjGr = (TileObjectGroup)l;
-                        tiObj.Id = tileObjGr.Objects.Count + 1;
+
+                        long maxId = -1;
+                        foreach(TileObject o in tileObjGr.Objects)
+                        {
+                            if (o.Id > maxId)
+                                maxId = o.Id;
+                        }
+                        tiObj.Id = maxId + 1;
                         tileObjGr.AddObject(tiObj);
                     }
                 }
@@ -852,6 +864,10 @@ namespace TiledMapDemo1
                 m_WorkPlaceGraphic.Dirty = true;
                 m_newObjectProperty = null;
                 m_selectObjectMode = false;
+                m_drawing = false;
+                m_BeginDrawingPoint.X = -1;
+                m_BeginDrawingPoint.Y = -1;
+
             }
         }
 

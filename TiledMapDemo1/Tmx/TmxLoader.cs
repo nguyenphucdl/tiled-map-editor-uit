@@ -142,12 +142,13 @@ namespace TiledMapDemo1
                     tileObject.Name = CommonUtil.SafeGetAttributeString(elem, "name");
                     tileObject.Type = CommonUtil.SafeGetAttributeString(elem, "type");
                     if (tileObject.Type.Equals(""))
-                        tileObject.Type = ((int)ObjectTypes.STATIC_OBJECT).ToString();
+                        tileObject.Type = ((int)ObjectTypes.BLOCK_OBJECT).ToString();
                     tileObject.Position = new System.Drawing.Point(x_o, y_o);
                     tileObject.Size = new System.Drawing.Size(width_o, height_o);
                     tileObject.Color = CommonUtil.SafeGetAttributeColor(elem, "color");
-                    
+                    tileObject.ObjectData = CommonUtil.SafeGetAttributeString(elem, "data");
 
+                    
                     // Check polygon
                     XElement polygonElem = elem.Element("polygon");
                     if (polygonElem != null)

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TiledMapDemo1.Contants;
 using TiledMapDemo1.Model;
 using TiledMapDemo1.Utils;
 
@@ -47,6 +48,13 @@ namespace TiledMapDemo1.Quadtree
 
             foreach (TileObject obj in objGroup.Objects)
             {
+                String spawLocationType = ((int)ObjectTypes.SPAWNLOCATION).ToString();
+
+                if (obj.Type.Equals(spawLocationType))
+                {
+                    continue;
+                }
+
                 m_quadtree.Insert(obj);
             }
 

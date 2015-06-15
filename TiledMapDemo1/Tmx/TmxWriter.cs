@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TiledMapDemo1.Contants;
 using TiledMapDemo1.Model;
 using TiledMapDemo1.Utils;
 
@@ -125,17 +126,41 @@ namespace TiledMapDemo1
                         }
                         objElem.SetAttributeValue("x", tiobj.Position.X);
                         objElem.SetAttributeValue("y", DemoUtils.GetInverseYScreenCoord(tiobj.Position.Y, m_tileMap.TileHeight * m_tileMap.Height));
-                        //objElem.SetAttributeValue("y", tiobj.Position.Y);
+                        objElem.SetAttributeValue("data", tiobj.ObjectData);
                         
                         if (tiobj.Size.Width != -1 && tiobj.Size.Height != -1)
                         {
                             objElem.SetAttributeValue("width", tiobj.Size.Width);
                             objElem.SetAttributeValue("height", tiobj.Size.Height);
                         }
-                        if (tiobj.Color != Color.Pink)
+                        
+                        switch (int.Parse(tiobj.Type))
                         {
-                            objElem.SetAttributeValue("color", ColorTranslator.ToHtml(tiobj.Color));
+                            case (int)ObjectTypes.BLOCK_OBJECT:
+                                tiobj.Color = Color.Black;
+                                break;
+                            case (int)ObjectTypes.END_SCENE:
+                                tiobj.Color = Color.Aqua;
+                                break;
+                            case (int)ObjectTypes.RANGE_OF_MOMENT:
+                                tiobj.Color = Color.Blue;
+                                break;
+                            case (int)ObjectTypes.SPAWNLOCATION:
+                                tiobj.Color = Color.Azure;
+                                break;
+                            case (int)ObjectTypes.STAIRWAY_OBJECT:
+                                tiobj.Color = Color.Yellow;
+                                break;
+                            case (int)ObjectTypes.DYNAMIC_OBJECT:
+                                tiobj.Color = Color.Red;
+                                break;
+                            default:
+                                tiobj.Color = Color.Plum;
+                                break;
                         }
+
+                        objElem.SetAttributeValue("color", ColorTranslator.ToHtml(tiobj.Color));
+                        
                         if (tiobj.ObjectType == TileObjectType.POLYLINE)
                         {
                             XElement polylineElem = new XElement("polyline");

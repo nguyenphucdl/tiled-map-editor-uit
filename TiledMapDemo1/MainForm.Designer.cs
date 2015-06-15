@@ -188,7 +188,7 @@
             this.treeViewMapLayer.Location = new System.Drawing.Point(15, 122);
             this.treeViewMapLayer.Margin = new System.Windows.Forms.Padding(4);
             this.treeViewMapLayer.Name = "treeViewMapLayer";
-            this.treeViewMapLayer.Size = new System.Drawing.Size(285, 144);
+            this.treeViewMapLayer.Size = new System.Drawing.Size(285, 152);
             this.treeViewMapLayer.TabIndex = 14;
             this.treeViewMapLayer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewMapExplorer_AfterSelect);
             // 
@@ -201,11 +201,11 @@
             // label1
             // 
             this.label1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.label1.Location = new System.Drawing.Point(15, 90);
+            this.label1.Location = new System.Drawing.Point(15, 75);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(13, 6, 0, 6);
-            this.label1.Size = new System.Drawing.Size(286, 25);
+            this.label1.Size = new System.Drawing.Size(286, 29);
             this.label1.TabIndex = 15;
             this.label1.Text = "Layers";
             // 
@@ -492,7 +492,7 @@
             this.propertyGrid.Location = new System.Drawing.Point(16, 292);
             this.propertyGrid.Margin = new System.Windows.Forms.Padding(4);
             this.propertyGrid.Name = "propertyGrid";
-            this.propertyGrid.Size = new System.Drawing.Size(284, 182);
+            this.propertyGrid.Size = new System.Drawing.Size(284, 217);
             this.propertyGrid.TabIndex = 25;
             // 
             // tileSheetPanel
@@ -505,7 +505,7 @@
             this.tileSheetPanel.Controls.Add(this.bufferedGraphic1);
             this.tileSheetPanel.Dirty = false;
             this.tileSheetPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.tileSheetPanel.Location = new System.Drawing.Point(18, 502);
+            this.tileSheetPanel.Location = new System.Drawing.Point(20, 530);
             this.tileSheetPanel.Margin = new System.Windows.Forms.Padding(4);
             this.tileSheetPanel.Name = "tileSheetPanel";
             this.tileSheetPanel.Size = new System.Drawing.Size(281, 189);
@@ -515,12 +515,12 @@
             // 
             this.tileSheetGraphic.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.tileSheetGraphic.Dirty = false;
-            this.tileSheetGraphic.Location = new System.Drawing.Point(12, 13);
+            this.tileSheetGraphic.Location = new System.Drawing.Point(-3, 5);
             this.tileSheetGraphic.Margin = new System.Windows.Forms.Padding(5);
             this.tileSheetGraphic.Name = "tileSheetGraphic";
-            this.tileSheetGraphic.Size = new System.Drawing.Size(251, 257);
+            this.tileSheetGraphic.Size = new System.Drawing.Size(259, 163);
             this.tileSheetGraphic.TabIndex = 21;
-            this.tileSheetGraphic.WorkplaceSize = new System.Drawing.Size(251, 257);
+            this.tileSheetGraphic.WorkplaceSize = new System.Drawing.Size(259, 163);
             this.tileSheetGraphic.Zoom = 1.25F;
             this.tileSheetGraphic.MouseLeave += new System.EventHandler(this.tileSheetGraphic_MouseLeave);
             // 
@@ -544,10 +544,10 @@
             this.mainPanel.Controls.Add(this.workplaceGraphic);
             this.mainPanel.Controls.Add(this.shapeContainer2);
             this.mainPanel.Dirty = false;
-            this.mainPanel.Location = new System.Drawing.Point(326, 90);
+            this.mainPanel.Location = new System.Drawing.Point(326, 75);
             this.mainPanel.Margin = new System.Windows.Forms.Padding(4);
             this.mainPanel.Name = "mainPanel";
-            this.mainPanel.Size = new System.Drawing.Size(970, 601);
+            this.mainPanel.Size = new System.Drawing.Size(970, 644);
             this.mainPanel.TabIndex = 17;
             // 
             // workplaceGraphic
@@ -569,7 +569,7 @@
             this.shapeContainer2.Name = "shapeContainer2";
             this.shapeContainer2.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.rectangleShape1});
-            this.shapeContainer2.Size = new System.Drawing.Size(844, 465);
+            this.shapeContainer2.Size = new System.Drawing.Size(968, 642);
             this.shapeContainer2.TabIndex = 21;
             this.shapeContainer2.TabStop = false;
             // 

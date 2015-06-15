@@ -16,7 +16,7 @@ namespace TiledMapDemo1
     {
 
         private IEnumerable<ObjectTypes> objectTypes;
-
+        private Array arrTypes;
         private TileObject tileObjectBound;
 
         private bool removeState = false;
@@ -39,6 +39,7 @@ namespace TiledMapDemo1
 
             objectTypes = EnumUtil.GetValues<ObjectTypes>();
             cmbObjectTypes.DataSource = objectTypes;
+            arrTypes = objectTypes.ToArray();
         }
 
         private void LoadTileObjectProperties()
@@ -46,6 +47,16 @@ namespace TiledMapDemo1
             txtBoxId.Text = tileObjectBound.Id.ToString();
             txtBoxName.Text = tileObjectBound.Name;
             txtObjectType.Text = tileObjectBound.Type;
+            txtBoxData.Text = tileObjectBound.ObjectData;
+
+            int outResult = -1;
+            if(int.TryParse(txtObjectType.Text, out outResult))
+            {
+                
+            }
+
+            cmbObjectTypes.SelectedIndex = outResult;
+
             if (txtObjectType.Text.Equals(""))
             {
                 cmbObjectTypes_SelectionChangeCommitted(cmbObjectTypes, null);
@@ -57,14 +68,16 @@ namespace TiledMapDemo1
 
             String newName = txtBoxName.Text;
             String newObjType = txtObjectType.Text;
+            String newObjData = txtBoxData.Text;
 
             tileObjectBound.Name = newName;
             tileObjectBound.Type = newObjType;
+            tileObjectBound.ObjectData = newObjData;
         }
 
         private void cmbObjectTypes_SelectedValueChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void cmbObjectTypes_SelectionChangeCommitted(object sender, EventArgs e)

@@ -8,9 +8,12 @@ namespace TiledMapDemo1.Contants
 {
     enum ObjectTypes
     {
-        STATIC_OBJECT,
-        RANGE_OF_MOMENT,
-        SPAWNLOCATION
+        BLOCK_OBJECT = 0,
+        END_SCENE = 1,
+        SPAWNLOCATION = 2,
+        RANGE_OF_MOMENT = 3,
+        STAIRWAY_OBJECT = 4,
+        DYNAMIC_OBJECT = 5
     }
 
     enum ViewportTypes

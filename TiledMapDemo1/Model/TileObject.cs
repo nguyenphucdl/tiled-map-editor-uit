@@ -40,6 +40,17 @@ namespace TiledMapDemo1.Model
             get { return m_type; }
             set { m_type = value; }
         }
+
+        private String m_objectData = "";
+
+        public String ObjectData
+        {
+            get { return m_objectData; }
+            set { m_objectData = value; }
+        }
+
+
+
         private Point m_position;
 
         public Point Position
